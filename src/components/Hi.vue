@@ -7,7 +7,7 @@
 export default {
   data () {
     return {
-      message: 'hi, 我的第一个vue程序'
+      message: 'hi, 我的第一个vue程序ddd'
     }
   }
 }

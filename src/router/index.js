@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+// 新建路由要导入文件地址
 import Hi from '@/components/Hi'
 
 Vue.use(Router)
 // 新建页面需要创建对应的路由
 export default new Router({
+  // 访问地址排除#
   mode: 'history',
   routes: [
     {
@@ -14,7 +16,7 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/hi',
+      path: '/his',
       name: 'Hi',
       component: Hi
     }
