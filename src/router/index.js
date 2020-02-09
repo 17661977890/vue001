@@ -5,6 +5,8 @@ import HelloWorld from '@/components/HelloWorld'
 import Hi from '@/components/Hi'
 import Login from '@/views/Login'
 import Main from '@/views/Main'
+import UserList from '@/views/system/user/list'
+import UserAdd from '@/views/system/user/add'
 
 Vue.use(Router)
 // 新建页面需要创建对应的路由
@@ -30,8 +32,28 @@ export default new Router({
     {
       path: '/main',
       name: 'Main',
-      component: Main
+      component: Main,
+      children: [
+        {
+          // 路由传参 两种形式
+          path: '/system/user/add/:id',
+          name: 'UserAdd',
+          component: UserAdd
+        },
+        {
+          path: '/system/user/list/:id',
+          name: 'UserList',
+          component: UserList,
+          props: true
+        },
+        {
+          // 重定向
+          path: '/home',
+          redirect: '/main'
+        }
+    
+      ]
     }
-
+    
   ]
 })
