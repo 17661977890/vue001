@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <!-- <img src="./assets/logo.png"> -->
     <!--这里用标签跳转url，也可以直接访问配置的路由url-->
-    <router-link to="/his">测试组件跳转</router-link>
+    <!-- <router-link to="/his">测试组件跳转</router-link> -->
     <router-view/>
   </div>
 </template>
