@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex);
 
-const state =sessionStorage.getItem("stage") ? JSON.parse(sessionStorage.getItem("stage")):{
+const state =sessionStorage.getItem("state") ? JSON.parse(sessionStorage.getItem("state")):{
   // 存对象
   user: {
     username: ""

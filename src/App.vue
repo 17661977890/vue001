@@ -12,12 +12,12 @@ export default {
   name: 'App',
   mounted() {
     // 捕获页面刷新事件
-    window.addEventListener("unload",this.saveStage)
+    window.addEventListener("unload",this.saveState)
   },
   methods:{
-    saveStage: function(){
-      console.log("sss",this.$store.stage)
-      sessionStorage.setItem("stage",JSON.stringify(this.$store.stage))
+    saveState: function(){
+      console.log("sss",this.$store.state)
+      sessionStorage.setItem("state",JSON.stringify(this.$store.state))
     }
   }
 }
