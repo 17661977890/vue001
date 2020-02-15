@@ -9,7 +9,17 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    // 捕获页面刷新事件
+    window.addEventListener("unload",this.saveStage)
+  },
+  methods:{
+    saveStage: function(){
+      console.log("sss",this.$store.stage)
+      sessionStorage.setItem("stage",JSON.stringify(this.$store.stage))
+    }
+  }
 }
 </script>
 

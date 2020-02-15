@@ -7,11 +7,12 @@ import Login from '@/views/Login'
 import Main from '@/views/Main'
 import UserList from '@/views/system/user/list'
 import UserAdd from '@/views/system/user/add'
+import NotFound from '@/views/exception/404'
 
 Vue.use(Router)
 // 新建页面需要创建对应的路由
 export default new Router({
-  // 访问地址排除#
+  // 路由模式：默认hash带# 排除#改为history模式
   mode: 'history',
   routes: [
     // {
@@ -53,6 +54,11 @@ export default new Router({
         }
     
       ]
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: NotFound
     }
     
   ]

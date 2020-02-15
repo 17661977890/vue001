@@ -38,6 +38,10 @@ export default {
       login: function(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            //登录拦截-存储用户信息
+            sessionStorage.setItem('isLogin','true')
+            this.$store.dispatch('asyncUpdateUser',this.form)
+
             this.$router.push("/main")
           } else {
             this.$message.error('请输入账号密码');
