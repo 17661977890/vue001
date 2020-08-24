@@ -37,12 +37,12 @@ export default new Router({
       children: [
         {
           // 路由传参 两种形式
-          path: '/system/user/add/:id',
+          path: '/system/user/add',
           name: 'UserAdd',
           component: UserAdd
         },
         {
-          path: '/system/user/list/:id',
+          path: '/system/user/list',
           name: 'UserList',
           component: UserList,
           props: true

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <el-container style="height: 500px; border: 1px solid #eee">
-      <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+  <div id="main">
+    <el-container style="height: 100%; border: 1px solid #eee">
+      <el-aside width="200px">
         <el-menu :default-openeds="['1']">
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-message"></i>首页</template>
@@ -10,7 +10,7 @@
             <template slot="title"><i class="el-icon-message"></i>系统管理</template>
             <el-menu-item-group>
               <!--嵌套路由-->
-              <el-menu-item index="2-1"><router-link to="/system/user/list/1">用户管理</router-link></el-menu-item>
+              <el-menu-item index="2-1"><router-link to="/system/user/list">用户管理</router-link></el-menu-item>
               <el-menu-item index="2-2"><router-link to="/system/menu/list">菜单管理</router-link></el-menu-item>
               <el-menu-item index="2-3"><router-link to="/system/role/list">角色管理</router-link></el-menu-item>
               <el-menu-item index="2-4"><router-link to="/system/promession/list">权限管理</router-link></el-menu-item>
@@ -44,8 +44,8 @@
       
       </el-aside>
       
-      <el-container>
-        <el-header style="text-align: right; font-size: 12px">
+      <el-container style="height: 100%; border: 1px solid #eee">
+        <el-header style="text-align: right; font-size: 12px;">
           <el-dropdown>
             <i class="el-icon-setting" style="margin-right: 15px"></i>
             <el-dropdown-menu slot="dropdown">
@@ -57,7 +57,7 @@
               <el-dropdown-item><router-link to="/logout">登出</router-link></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <span>{{this.$store.getters.getUser.username}}</span>
+          <!-- <span>{{this.$store.getters.getUser.username}}</span> -->
         </el-header>
         
         <el-main>
@@ -70,6 +70,7 @@
   </div>
 </template>
 <script>
+
 export default {
   name: 'Main',
   data() {
@@ -85,13 +86,17 @@ export default {
 };
 </script>
 <style scoped>
+  #main {
+    height: 100%;
+  }
   .el-header {
-    background-color: #B3C0D1;
-    color: #333;
+    /* background-color: #03183c;
+    color: #333; */
     line-height: 60px;
   }
   
   .el-aside {
     color: #333;
+    height: 100%;
   }
 </style>

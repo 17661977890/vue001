@@ -2,9 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+// 路由
 import router from './router'
+// ElementUI
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+// import './styles/element-variables.scss'
+// global css
+import '@/styles/index.scss'
+
 // 通信
 import axios from 'axios'
 // 状态管理(sessionStorage)

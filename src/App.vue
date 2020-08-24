@@ -10,16 +10,16 @@
 <script>
 export default {
   name: 'App',
-  mounted() {
-    // 捕获页面刷新事件
-    window.addEventListener("unload",this.saveState)
-  },
-  methods:{
-    saveState: function(){
-      console.log("sss",this.$store.state)
-      sessionStorage.setItem("state",JSON.stringify(this.$store.state))
-    }
-  }
+  // mounted() {
+  //   // 捕获页面刷新事件
+  //   window.addEventListener("unload",this.saveState)
+  // },
+  // methods:{
+  //   saveState: function(){
+  //     console.log("sss",this.$store.state)
+  //     sessionStorage.setItem("state",JSON.stringify(this.$store.state))
+  //   }
+  // }
 }
 </script>
 
@@ -30,6 +30,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   /* margin-top: 60px; */
 }
 </style>

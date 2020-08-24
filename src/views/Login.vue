@@ -10,7 +10,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="login('form')" class="login-button">登录</el-button>
-          <!-- <el-button>注册</el-button> -->
+          <el-button>注册</el-button>
         </el-form-item>
       </el-form>
   </div>
@@ -38,10 +38,10 @@ export default {
       login: function(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            //登录拦截-存储用户信息
+            // 登录请求
+            this.$store.dispatch('Login',this.form)
+            console.log("=======登录成功========")
             sessionStorage.setItem('isLogin','true')
-            this.$store.dispatch('asyncUpdateUser',this.form)
-
             this.$router.push("/main")
           } else {
             this.$message.error('请输入账号密码');

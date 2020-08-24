@@ -10,7 +10,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      "/user-center": {
+        target: "http://localhost:9002", //设置调用的接口域名和端口
+        changeOrigin: true,
+        pathRewrite: {
+              "^/user-center": "" //用'/user-center' 代替 'localhost:9002'
+        }
+      } 
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
