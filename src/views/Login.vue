@@ -14,7 +14,10 @@
           </el-form-item>
           <el-form-item label="验证码" prop="code">
             <el-input v-model="form.code"  style="width: 200px;"></el-input>
-            <el-button style="width:100px;margin: 0 0 0 15px;text-align: center">获取验证码</el-button>
+            <el-button class="codeBtn">
+              <span v-if="countDown" @click="getCodes('form')">获取验证码</span>
+              <span v-if="!countDown">重新发送({{timer}}s)</span>
+            </el-button>
           </el-form-item>
         
           <el-form-item>
@@ -40,6 +43,7 @@
   </div>
 </template>
 <script>
+import { getSmsCode } from '@/api/sys/login'
 export default {
   name: 'Login',
   data() {
@@ -99,6 +103,20 @@ export default {
         },
         loading: false,
         regLoading: false,
+        countDown:true,
+        timer:59,
+      }
+    },
+    created(){
+      var count = this.getCount();
+      if(count == 59){
+        this.countDown=true;
+        // 及时销毁，因为每次刷新 本地 会存储loginTime，如果不清楚 第二次刷新就会自动倒计时了
+        localStorage.removeItem('loginTime');
+      }else{
+        this.countDown=false;
+        this.timer=count;
+        this.timeCountDown(this.timer)
       }
     },
     methods: {
@@ -116,7 +134,6 @@ export default {
             }).catch((e)=>{
               console.log("登录失败:"+e)
               this.loading=false
-
             })
             
           } else {
@@ -159,6 +176,70 @@ export default {
           }
         });
         
+      },
+      getCodes: function(formName){
+        console.log("短信登录获取验证码"+this.countDown)
+        console.log("短信登录获取验证码"+this.timer)
+        //倒计时逻辑（js 中得定时器 循环执行: setInterval 定时执行：setTimeout）
+        if(this.countDown){
+          this.timer = this.getCount();
+          console.log("短信登录获取验证码"+this.timer)
+          this.countDown = false;
+          this.timeCountDown(this.timer)
+          // 获取短信验证码请求(登录类型为1)
+          getSmsCode(this.form.username,1).then(response => {
+            this.$message({
+              showClose: true,
+              message: '验证码已发送，请注意查收',
+              type: 'success',
+              duration: 1000
+            });
+          }).catch(error => {
+            console.log(error)
+          })
+        }else{
+          this.$message({
+              showClose: true,
+              message: '验证码已发送，请稍后重试',
+              type: 'warning',
+              duration: 1000
+            });
+            return false;
+        }
+        
+      },
+      timeCountDown(timer) {
+        var auth_timer = setInterval(()=>{
+            this.timer--;
+            if(this.timer<=0){
+              // 销毁定时器，loginTime
+              this.timer = 59;
+              clearInterval(auth_timer)
+              this.countDown = true;
+              localStorage.removeItem('loginTime');
+              
+            }
+          },1000)
+      },
+      getCount() {
+        console.log("lllll: ",localStorage.getItem('loginTime')==null)
+        var now=new Date().getTime();
+        if(localStorage.getItem('loginTime')){
+            var old=localStorage.getItem('loginTime');
+            var remainTime=(now - old)/1000;
+            console.log("倒计时：",remainTime)
+            //59是设定的倒计时，
+            if(remainTime<=this.timer){
+                //剩下多少秒
+                return parseInt(this.timer-remainTime);
+            }else{
+              localStorage.setItem('loginTime',now);
+              return 59;
+            }
+        }else{
+            localStorage.setItem('loginTime',now);
+            return 59;  
+        }
       },
       smsLogin(formName) {
         this.show = true
@@ -233,5 +314,16 @@ export default {
     margin: 0 70px 0 0 ;
     letter-spacing: 2px;
   }
-  
+  .codeBtn {
+    width:100px;
+    height: 40px;
+    margin: 0 0 0 15px;
+    text-align: center;
+    padding: 5px 5px !important;
+  }
+  .codeBtn span {
+    width:100px;
+    text-align: center;
+    color: #000;
+  }
 </style>

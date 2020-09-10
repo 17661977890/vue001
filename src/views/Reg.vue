@@ -4,7 +4,8 @@
         <h1>奇点商城注册</h1>
           <el-form-item prop="username" label="手机号">
             <el-input v-model="form.username" placeholder="请输入手机号"  prefix-icon="el-icon-mobile-phone">
-              <span slot="append" class="getCode" @click="getSmsCode('form')">获取验证码</span>
+              <span slot="append" class="getCode" @click="getCodes('form')"  v-if="countDown">获取验证码</span>
+              <span slot="append" class="reSend" v-if="!countDown">重新发送({{timer}}s)</span>
             </el-input>
           </el-form-item>
           <el-form-item prop="smsCode" label="验证码">
@@ -27,8 +28,8 @@
   </div>
 </template>
 <script>
- import { reg, codes, getInfo } from '@/api/sys/login'
- import { isvalidMobile } from '@/utils/validate'
+import { reg, getSmsCode, getInfo } from '@/api/sys/login'
+import { isvalidMobile } from '@/utils/validate'
 export default {
   name: 'Reg',
   data() {
@@ -78,6 +79,20 @@ export default {
         
         },
         loading: false,
+        countDown:true,
+        timer:59,
+      }
+    },
+    created(){
+      var count = this.getCount();
+      console.log("ssss"+count + (count == 59))
+      if(count == 59){
+        this.countDown=true;
+        localStorage.removeItem('regTime');
+      }else{
+        this.countDown=false;
+        this.timer=count;
+        this.timeCountDown(this.timer)
       }
     },
     methods: {
@@ -104,20 +119,35 @@ export default {
         });
         
       },
-      getSmsCode: function(formName){
+      getCodes: function(formName){
           if (isvalidMobile(this.form.username)) {
-            this.loading=true
-            // 获取短信验证码请求
-            getSmsCode(this.form.username).then(response => {
+            //倒计时逻辑（js 中得定时器 循环执行: setInterval 定时执行：setTimeout）
+            console.log("注册获取验证码"+this.countDown)
+            console.log("注册获取验证码"+this.timer)
+            if(this.countDown){
+              this.timer = this.getCount();
+              this.countDown = false;
+              this.timeCountDown(this.timer)
+              // 获取短信验证码请求(注册 类型为2)
+              getSmsCode(this.form.username,2).then(response => {
+                this.$message({
+                  showClose: true,
+                  message: '验证码已发送，请注意查收',
+                  type: 'success',
+                  duration: 1000
+                });
+              }).catch(error => {
+                console.log(error)
+              })
+            }else{
               this.$message({
-                showClose: true,
-                message: '验证码已发送，请注意查收',
-                type: 'success',
-                duration: 1000
-              });
-            }).catch(error => {
-              console.log(error)
-            })
+                  showClose: true,
+                  message: '验证码已发送，请稍后重试',
+                  type: 'warning',
+                  duration: 1000
+                });
+                return false;
+            }
               
           } else {
             this.$message({
@@ -130,6 +160,39 @@ export default {
           }
        
       },
+      timeCountDown(timer) {
+        var auth_timer = setInterval(()=>{
+            this.timer--;
+            if(this.timer<=0){
+              // 销毁定时器，移除regTime
+              this.timer = 59;
+              clearInterval(auth_timer)
+              this.countDown = true;
+              localStorage.removeItem('regTime');
+              console.log(localStorage.getItem('regTime'))
+              
+            }
+          },1000)
+      },
+      getCount() {
+        var now=new Date().getTime();    
+        if(localStorage.getItem('regTime')){
+            var old=localStorage.getItem('regTime');
+            var remainTime=(now - old)/1000;
+            //59是设定的倒计时，
+            if(remainTime<=this.timer){
+                //剩下多少秒
+                return parseInt(this.timer-remainTime);
+            }else{
+              localStorage.setItem('regTime',now);
+              return 59;
+            }
+        }else{
+          localStorage.setItem('regTime',now);
+          return 59;
+          
+        }
+      },
       login() {
         this.$router.push({path: '/login'})
       }
@@ -138,7 +201,6 @@ export default {
 }
 </script>
 <style scoped>
-  
   .reg {
     display: flex;
     justify-content: center;
@@ -178,7 +240,7 @@ export default {
     margin-left: 20px !important;
     margin: 0 20px;
   }
-  .getCode {
+  .getCode,.reSend {
     cursor: pointer;
   }
 </style>

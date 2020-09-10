@@ -46,16 +46,15 @@ export function reg(username, password,code,confimpassword) {
         }
     })
 }
-
-export function getSmsCode(username) {
+// 获取短信验证码
+export function getSmsCode(username,type) {
   return request({
-      url: '/qd-mall-messageserver/sms/getCode',
+      url: '/qd-mall-messageserver/sms-server/sendSms',
       method: 'post',
       data: {
           username,
-          confimpassword,
-          code,
-          password
+          type,
+
       }
   })
 }
