@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/sys/login'
+import { login, smslogin,logout, getInfo } from '@/api/sys/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -25,6 +25,9 @@ const user = {
     },
     SET_MENUS: (state, menus) => {
       state.menus = menus
+    },
+    SET_ISLOGIN: (state,isLogin) => {
+      state.isLogin = isLogin
     }
   },
 
@@ -34,6 +37,23 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
+            console.log("请求结果："+response)
+            if (response.access_token) {
+                setToken(response.access_token);
+                commit('SET_TOKEN', response.access_token);
+                resolve()
+            }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 手机短信登录
+    SmsLogin({ commit }, userInfo) {
+      const phone = userInfo.phone.trim()
+      return new Promise((resolve, reject) => {
+        smslogin(phone, userInfo.code).then(response => {
+            console.log("请求结果："+response)
             if (response.access_token) {
                 setToken(response.access_token);
                 commit('SET_TOKEN', response.access_token);
@@ -49,16 +69,18 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
-          const data = response.data
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.roles)
-          } else {
-            reject('getInfo: roles must be a non-null array !')
-          }
+          console.log("获取用户信息返回："+JSON.stringify(response))
+          const data = response
+          // if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+          //   commit('SET_ROLES', data.roles)
+          // } else {
+          //   reject('getInfo: roles must be a non-null array !')
+          // }
           commit('SET_NAME', data.username)
-          commit('SET_AVATAR', data.icon)
+          // commit('SET_AVATAR', data.icon)
           resolve(response)
         }).catch(error => {
+          console.log(error.message)
           reject(error)
         })
       })

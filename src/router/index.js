@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+
 // 新建路由要导入文件地址
-import Hi from '@/components/Hi'
 import Login from '@/views/Login'
+import Reg from '@/views/Reg'
 import Main from '@/views/Main'
 import UserList from '@/views/system/user/list'
 import UserAdd from '@/views/system/user/add'
@@ -15,20 +15,15 @@ export default new Router({
   // 路由模式：默认hash带# 排除#改为history模式
   mode: 'history',
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'HelloWorld',
-    //   component: HelloWorld
-    // },
-    // {
-    //   path: '/his',
-    //   name: 'Hi',
-    //   component: Hi
-    // },
     {
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/Reg',
+      name: 'Reg',
+      component: Reg
     },
     {
       path: '/main',

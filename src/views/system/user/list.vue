@@ -9,6 +9,9 @@
       </el-select>
     </div>
     <div>
+      
+    </div>
+    <div>
     <el-table :data="userList" ref="multipleTable" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange"  v-loading="listLoading">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
@@ -18,7 +21,7 @@
       <el-table-column prop="type" label="类型" align="center"></el-table-column>
       <el-table-column prop="sex" label="性别" align="center" :formatter="formatSex"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="180" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
