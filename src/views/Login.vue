@@ -265,7 +265,7 @@ export default {
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-image: url("../assets/image/back2.jpeg");
+    background-image: url("../assets/image/back-7.jpg");
     background-size: cover;
     
   }
@@ -279,8 +279,8 @@ export default {
     text-align: center;
     box-shadow: 0 0 20px;
     position: absolute;
-    top: -13px;
-    right: 120px;
+    top: 15%;
+    left: 63%;
   }
   .login-button {
     width: 150px;
