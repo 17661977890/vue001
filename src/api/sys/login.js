@@ -23,38 +23,51 @@ export function mobilelogin(phone, password) {
   })
 }
 // 手机短信验证码登录
-export function smslogin(phone, code) {
+export function smslogin(receiveTerminalNo,verificationCode,smsCodeId,platformType,businessType,receiveTerminalType) {
   return request({
     url: '/qd-mall-uaaserver/api/oauth/sms/token',
     method: 'post',
     data: {
-      phone,
-      code
+      receiveTerminalNo,
+      verificationCode,
+      smsCodeId,
+      platformType,
+      businessType,
+      receiveTerminalType
     }
   })
 }
 
-export function reg(username, password,code,confimpassword) {
+export function reg(username, password,mobile,smsCode,confirmPassword,smsCodeId,platformType,businessType,receiveTerminalType) {
     return request({
-        url: '/qd-mall-usercenter/sys-user/reg',
+        url: '/qd-mall-usercenter/sys-user/regUser',
         method: 'post',
         data: {
+          body:{
             username,
-            confimpassword,
-            code,
-            password
-        }
+            confirmPassword,
+            mobile,
+            smsCode,
+            password,
+            smsCodeId,
+            platformType,
+            businessType,
+            receiveTerminalType
+        },
+        header:{}
+      }
     })
 }
 // 获取短信验证码
-export function getSmsCode(username,type) {
+export function getSmsCode(platformType,businessType,receiveTerminalNo,receiveTerminalType) {
   return request({
-      url: '/qd-mall-messageserver/sms-server/sendSms',
+      url: '/qd-mall-usercenter/sys-sms-code/sendSmsVerificationCode',
       method: 'post',
       data: {
-          username,
-          type,
-
+        platformType,
+        businessType,
+        receiveTerminalNo,
+        receiveTerminalType
       }
   })
 }

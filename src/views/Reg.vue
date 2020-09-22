@@ -2,8 +2,11 @@
   <div class="reg">
       <el-form ref="form" :model="form"  :rules="rules" label-width="80px" class="reg-form-box" style="margin-left: 0;">
         <h1>奇点商城注册</h1>
-          <el-form-item prop="username" label="手机号">
-            <el-input v-model="form.username" placeholder="请输入手机号"  prefix-icon="el-icon-mobile-phone">
+          <el-form-item prop="username" label="账号名称">
+            <el-input v-model="form.username" placeholder="请输入账号名称" prefix-icon="el-icon-chat-dot-square"></el-input>
+          </el-form-item>
+          <el-form-item prop="mobile" label="手机号">
+            <el-input v-model="form.mobile" placeholder="请输入手机号"  prefix-icon="el-icon-mobile-phone">
               <span slot="append" class="getCode" @click="getCodes('form')"  v-if="countDown">获取验证码</span>
               <span slot="append" class="reSend" v-if="!countDown">重新发送({{timer}}s)</span>
             </el-input>
@@ -29,11 +32,18 @@
 </template>
 <script>
 import { reg, getSmsCode, getInfo } from '@/api/sys/login'
-import { isvalidMobile } from '@/utils/validate'
+import { isvalidMobile,isValidatUsername } from '@/utils/validate'
 export default {
   name: 'Reg',
   data() {
-    const validateUsername = (rule, value, callback) => {
+      const validateUsername = (rule, value, callback) => {
+        if (!isValidatUsername(value)) {
+          callback(new Error('用户名必须有6-12位大小写英文和数字组成'))
+        } else {
+          callback()
+        }
+      };
+      const validateMobile = (rule, value, callback) => {
         if (!isvalidMobile(value)) {
           callback(new Error('请输入正确手机号'))
         } else {
@@ -41,8 +51,9 @@ export default {
         }
       };
       const validatePass = (rule, value, callback) => {
-        if (value.length < 6) {
-          callback(new Error('密码不能小于6位'))
+        var passwordreg =  /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/ 
+        if (!passwordreg.test(value)) {
+          callback(new Error('密码必须由数字、字母、特殊字符组合,请输入6-16位'))
         } else {
           callback()
         }
@@ -57,14 +68,18 @@ export default {
       return {
         form: {
           username: '',
+          mobile:'',
           password: '',
           confirmPassword: '',
           smsCode: ''
         },
         
         rules: {
-          username: [
-            { required: true, trigger: 'blur' ,validator: validateUsername}
+           username: [
+            { required: true,  trigger: 'blur',validator: validateUsername}
+          ],
+          mobile: [
+            { required: true, trigger: 'blur' ,validator: validateMobile}
           ],
           smsCode: [
             { required: true, message: '请输入验证码', trigger: 'blur' }
@@ -81,6 +96,7 @@ export default {
         loading: false,
         countDown:true,
         timer:59,
+        smsCodeId:''
       }
     },
     created(){
@@ -94,17 +110,30 @@ export default {
         this.timer=count;
         this.timeCountDown(this.timer)
       }
+      console.log("实际验证码id：",this.smsCodeId)
+      console.log("验证码id：",localStorage.getItem("smsCodeId"))
     },
     methods: {
       regUser: function(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.loading=true
+            if(!this.smsCodeId){
+              console.log("消息验证码id为空，从本地缓存获取");
+              this.smsCodeId = localStorage.getItem("smsCodeId");
+            }
             // 注册请求
-            reg(this.form.username, this.form.password ,this.form.code,this.form.confimpassword).then(response => {
+            reg(this.form.username, this.form.password ,this.form.mobile,this.form.smsCode,this.form.confirmPassword,this.smsCodeId,3,1,1).then(response => {
+              this.$message({
+                  showClose: true,
+                  message: '注册成功',
+                  type: 'success',
+                  duration: 1000
+                });
               this.$router.push({path: '/login'})
             }).catch(error => {
               console.log(error)
+              this.loading=false
             })
               
           } else {
@@ -120,7 +149,7 @@ export default {
         
       },
       getCodes: function(formName){
-          if (isvalidMobile(this.form.username)) {
+          if (isvalidMobile(this.form.mobile)) {
             //倒计时逻辑（js 中得定时器 循环执行: setInterval 定时执行：setTimeout）
             console.log("注册获取验证码"+this.countDown)
             console.log("注册获取验证码"+this.timer)
@@ -128,8 +157,11 @@ export default {
               this.timer = this.getCount();
               this.countDown = false;
               this.timeCountDown(this.timer)
-              // 获取短信验证码请求(注册 类型为2)
-              getSmsCode(this.form.username,2).then(response => {
+              // 获取短信验证码请求(注册平台 web：3 、注册业务类型：1、终端类型 手机：1 )
+              getSmsCode(3,1,this.form.mobile,1).then(response => {
+                console.log("发送短信验证码返回结果：",response);
+                this.smsCodeId=response.smsCodeId;
+                localStorage.setItem("smsCodeId",this.smsCodeId)
                 this.$message({
                   showClose: true,
                   message: '验证码已发送，请注意查收',

@@ -50,9 +50,8 @@ const user = {
     },
     // 手机短信登录
     SmsLogin({ commit }, userInfo) {
-      const phone = userInfo.phone.trim()
       return new Promise((resolve, reject) => {
-        smslogin(phone, userInfo.code).then(response => {
+        smslogin(userInfo.phone,userInfo.code,userInfo.smsCodeId,userInfo.platformType,userInfo.businessType,userInfo.receiveTerminalType).then(response => {
             console.log("请求结果："+response)
             if (response.access_token) {
                 setToken(response.access_token);

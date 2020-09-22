@@ -19,6 +19,19 @@
               <span v-if="!countDown">重新发送({{timer}}s)</span>
             </el-button>
           </el-form-item>
+          <el-form-item label="" prop="smsCodeId" v-show="false">
+            <el-input v-model="form.smsCodeId"></el-input>
+          </el-form-item>
+          <el-form-item label="" prop="platformType" v-show="false">
+            <el-input v-model="form.platformType"></el-input>
+          </el-form-item>
+          <el-form-item label="" prop="businessType" v-show="false">
+            <el-input v-model="form.businessType"></el-input>
+          </el-form-item>
+          <el-form-item label="" prop="receiveTerminalType" v-show="false">
+            <el-input v-model="form.receiveTerminalType"></el-input>
+          </el-form-item>
+
         
           <el-form-item>
             <el-button  @click="loginBySms('form')" :loading="loading" class="login-button">登录</el-button>
@@ -86,7 +99,11 @@ export default {
           username: '',
           password: '',
           phone: '',
-          code: ''
+          code: '',
+          platformType: 3,
+          businessType: 2,
+          receiveTerminalType: 1,
+          smsCodeId: ''
         },
         
         rules: {
@@ -152,6 +169,10 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.loading=true
+            if(!this.smsCodeId){
+              console.log("消息验证码id为空，从本地缓存获取");
+              this.form.smsCodeId = localStorage.getItem("smsCodeId");
+            }
             // 登录请求
             this.$store.dispatch('SmsLogin',this.form).then(()=>{
               this.loading=false
@@ -178,6 +199,15 @@ export default {
         
       },
       getCodes: function(formName){
+        if(!this.form.phone){
+            this.$message({
+              showClose: true,
+              message: '请输入手机号',
+              type: 'error',
+              duration: 1000
+            });
+            return false;
+        }
         console.log("短信登录获取验证码"+this.countDown)
         console.log("短信登录获取验证码"+this.timer)
         //倒计时逻辑（js 中得定时器 循环执行: setInterval 定时执行：setTimeout）
@@ -186,8 +216,10 @@ export default {
           console.log("短信登录获取验证码"+this.timer)
           this.countDown = false;
           this.timeCountDown(this.timer)
-          // 获取短信验证码请求(登录类型为1)
-          getSmsCode(this.form.username,1).then(response => {
+          // 获取短信验证码请求(登录类型为1)phone
+          getSmsCode(3,2,this.form.phone,1).then(response => {
+            this.form.smsCodeId=response.smsCodeId;
+            localStorage.setItem("smsCodeId",this.smsCodeId)
             this.$message({
               showClose: true,
               message: '验证码已发送，请注意查收',
