@@ -4,24 +4,26 @@
       <el-input v-model="listQuery.body.name" placeholder="请输入姓名" clearable style="width: 200px" class="filter-item"></el-input>
       <el-input v-model="listQuery.body.username" placeholder="请输入账户" clearable style="width: 200px" class="filter-item"></el-input>
       <el-input v-model="listQuery.body.telphone" placeholder="请输入手机号" clearable  style="width: 200px" class="filter-item"></el-input>
-      <el-select v-model="listQuery.body.sex"  clearable style="width: 100px" class="filter-item">
+      <el-select v-model="listQuery.body.sex"  placeholder="性别" clearable style="width: 100px" class="filter-item">
           <el-option v-for="item in sexOptions" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
+      <el-button type="primary" icon="el-icon-search" class="filter-item" >搜索</el-button>
+      <el-button type="primary" icon="el-icon-edit" class="filter-item"  @click="addUser()">新增</el-button>
     </div>
     <div>
       
     </div>
     <div>
-    <el-table :data="userList" ref="multipleTable" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange"  v-loading="listLoading">
+    <el-table :data="userList" ref="multipleTable" tooltip-effect="dark" style="width: 100%" border  @selection-change="handleSelectionChange"  v-loading="listLoading">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
+      <el-table-column type="index" :index="indexMethod" label="序号" width="80"></el-table-column>
       <el-table-column prop="username" label="账户" align="center"></el-table-column>
       <el-table-column prop="nickname" label="昵称" align="center"></el-table-column>
       <el-table-column prop="mobile" label="手机号" align="center"></el-table-column>
       <el-table-column prop="type" label="类型" align="center"></el-table-column>
       <el-table-column prop="sex" label="性别" align="center" :formatter="formatSex"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
-      <el-table-column label="操作" width="180" align="center">
+      <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -36,7 +38,7 @@
     </el-table>
     </div>
     <!--分页工具-->
-    <div class="block">
+    <div class="pagination-container">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -141,14 +143,24 @@ export default {
     formatSex: function (row, column) {
       return row.sex === 1 ? '男' : row.sex === 0 ? '女' : '未知'
     },
+    addUser: function(){
+      this.$router.push({path: '/system/user/add'})
+    }
   }
 }
 </script>
 
 <style>
 .filter-item {
-    display: inline-block;
-    vertical-align: middle;
-    margin-bottom: 10px;
-  }
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 10px;
+  margin: 0 5px 10px 0;
+  float: left;
+  
+}
+.pagination-container{
+    background: #fff;
+    padding: 32px 16px;
+}
 </style>

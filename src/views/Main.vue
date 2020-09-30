@@ -21,8 +21,8 @@
             <el-menu-item-group>
               <!--嵌套路由-->
               <el-menu-item index="2-1"><router-link to="/system/user/list">用户管理</router-link></el-menu-item>
-              <el-menu-item index="2-2">菜单管理</el-menu-item>
-              <el-menu-item index="2-3">角色管理</el-menu-item>
+              <el-menu-item index="2-2">角色管理</el-menu-item>
+              <el-menu-item index="2-3">菜单管理</el-menu-item>
               <el-menu-item index="2-4">权限管理</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
@@ -235,6 +235,13 @@ export default {
     width: 400px;
     height: 50px;
   } */
+  a {
+    text-decoration: none;
+    color: rgb(23, 152, 226);
+  }
+  .router-link-active {
+    text-decoration: none;
+  }
   
 </style>
 <!--解决el-submenu__title:hover 悬浮改变背景色在 scoped不好使-->

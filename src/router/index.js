@@ -34,7 +34,7 @@ export default new Router({
           // 路由传参 两种形式
           path: '/system/user/add',
           name: 'UserAdd',
-          component: UserAdd
+          component: UserAdd,
         },
         {
           path: '/system/user/list',
