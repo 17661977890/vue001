@@ -49,14 +49,18 @@
         :total="total">
       </el-pagination>
     </div>
+    <UserAdd v-if="addOrUpdateVisible" ref="userAdd"></UserAdd>
   </div>
 </template>
 
 <script>
 import {listUser} from '@/api/sys/user'
-
+import UserAdd from './add'
 export default {
   name: "userList",
+  components:{
+    UserAdd
+  },
   data() {
       return {
         userList: null,
@@ -81,6 +85,7 @@ export default {
         listLoading: true,
         multipleSelection: [],
         total: null,
+        addOrUpdateVisible:false
       }
   },
   created() {
@@ -125,6 +130,10 @@ export default {
     },
     handleEdit(index, row) {
       console.log(index, row);
+       this.addOrUpdateVisible=true,
+      this.$nextTick(()=>{
+        this.$refs.userAdd.init(row.id)
+      })
     },
     handleDelete(index, row) {
       console.log(index, row);
@@ -144,7 +153,12 @@ export default {
       return row.sex === 1 ? '男' : row.sex === 0 ? '女' : '未知'
     },
     addUser: function(){
-      this.$router.push({path: '/system/user/add'})
+      // this.$router.push({path: '/system/user/add'})
+      this.addOrUpdateVisible=true,
+      this.$nextTick(()=>{
+        this.$refs.userAdd.init()
+      })
+     
     }
   }
 }
