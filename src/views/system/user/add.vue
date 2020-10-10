@@ -7,23 +7,20 @@
       <el-form-item label="手机号码：" prop="mobile">
         <el-input v-model="admin.mobile"></el-input>
       </el-form-item>
-      <el-form-item label="用户昵称：" prop="nickName" >
-        <el-input v-model="admin.nickName"></el-input>
-      </el-form-item>
-      <el-form-item label="用户密码：" prop="password">
-        <el-input v-model="admin.password" show-password ></el-input>
+      <el-form-item label="用户昵称：" prop="nickname" >
+        <el-input v-model="admin.nickname"></el-input>
       </el-form-item>
       <el-form-item label="用户邮箱：" prop="email">
         <el-input v-model="admin.email"></el-input>
       </el-form-item>
       <el-form-item label="用户性别：" prop="sex" >
         <el-radio-group v-model="admin.sex">
-          <el-radio label="1">男</el-radio>
-          <el-radio label="2">女</el-radio>
+          <el-radio :label="1">男</el-radio>
+          <el-radio :label="0">女</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="saveUser('UserFrom')">保存</el-button>
+        <el-button type="primary" @click="saveUser('UserFrom')" :loading="loading">保存</el-button>
         <el-button @click="cancel()">取消</el-button>
       </el-form-item>
     </el-form>
@@ -31,29 +28,52 @@
 </template>
 
 <script>
+import {addUser, updateUser, delUser,getUserInfo} from '@/api/sys/user'
+import { isvalidMobile,isValidatUsername,validEmail } from '@/utils/validate'
 export default {
   name: "UserAdd",
   data(){
+    const validateUsername = (rule, value, callback) => {
+      if (!isValidatUsername(value)) {
+        callback(new Error('用户名必须有6-12位大小写英文和数字组成'))
+      } else {
+        callback()
+      }
+    };
+    const validateMobile = (rule, value, callback) => {
+      if (!isvalidMobile(value)) {
+        callback(new Error('请输入正确手机号'))
+      } else {
+        callback()
+      }
+    };
+    const validEmail = (rule, value, callback) => {
+      if (!isvalidEmail(value)) {
+        callback(new Error('请输入正确邮箱'))
+      } else {
+        callback()
+      }
+    };
     return{
       admin:{
-        nickName:'',
+        nickname:'',
         username:'',
         password:'',
-        emial:'',
+        email:'',
         mobile:'',
         sex:'',
         id:''
       },
       dialogFormVisible: false,
+      loading: false,
       rules: {
         username: [
-          { required: true, message: '请输入用户账号', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, trigger: 'blur' ,validator: validateUsername},
         ],
         mobile: [
-          { required: true, message: '请输入手机号码', trigger: 'blur' }
+          { required: true, trigger: 'blur' ,validator: validateMobile}
         ],
-        nickName: [
+        nickname: [
           { required: true, message: '请输入昵称', trigger: 'blur' }
         ],
         password: [
@@ -74,7 +94,14 @@ export default {
       this.admin.id = id
       this.dialogFormVisible=true
       if(!id){
+         console.log("新增:",this.admin.id)
          this.$refs.UserFrom.resetFields();
+      }else{
+        console.log("编辑：",this.admin.id)
+        getUserInfo(this.admin.id).then(response => {
+          this.admin = response;
+        });
+      
       }
     },
     cancel: function(){
@@ -83,8 +110,46 @@ export default {
     saveUser: function(formName){
       this.$refs[formName].validate((valid) => {
           if (valid) {
-            // 调用保存用户接口
-            alert('submit!');
+            this.$confirm('是否保存数据', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.loading=true
+              // 调用保存用户接口
+              if(this.admin.id){
+                // 有id 就是编辑
+                updateUser(this.admin).then(response => {
+                  this.$message({
+                    showClose: true,
+                    message: '编辑成功',
+                    type: 'success',
+                    duration: 1000
+                  });
+                   
+                }).catch(error => {
+                  console.log(error)
+                })
+                 this.loading=false
+                 this.dialogFormVisible=false
+              }else{
+                // 没有id 就是保存
+                addUser(this.admin).then(response => {
+                  this.$message({
+                    showClose: true,
+                    message: '新增成功',
+                    type: 'success',
+                    duration: 1000
+                  });
+                }).catch(error => {
+                  console.log(error)
+                  
+                })
+                this.loading=false
+                this.dialogFormVisible=false
+              }
+            });
+            
           } else {
             console.log('error submit!!');
             return false;

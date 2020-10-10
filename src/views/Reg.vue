@@ -16,10 +16,10 @@
           </el-form-item>
           <el-form-item prop="password" label="密码">
              
-            <el-input v-model="form.password" type="password" placeholder="请输入密码" prefix-icon="el-icon-lock"></el-input>
+            <el-input v-model="form.password" type="password" placeholder="请输入密码" prefix-icon="el-icon-lock"  show-password></el-input>
           </el-form-item>
           <el-form-item prop="confirmPassword" label="确认密码">
-            <el-input v-model="form.confirmPassword" type="password" placeholder="请再次输入密码" prefix-icon="el-icon-check"></el-input>
+            <el-input v-model="form.confirmPassword" type="password" placeholder="请再次输入密码" prefix-icon="el-icon-check"  show-password></el-input>
           </el-form-item>
         
           <el-form-item>

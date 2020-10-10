@@ -20,36 +20,49 @@ export function listUser(query) {
 // }
 
 // 查询用户详细
-// export function getUser(userId) {
-//   return request({
-//     url: '/system/user/' + praseStrEmpty(userId),
-//     method: 'get'
-//   })
-// }
+export function getUserInfo(id) {
+  return request({
+    url: '/qd-mall-usercenter/sys-user/getUserInfoById',
+    method: 'post',
+    data: {
+      body:{
+        id
+      },
+      header:{}
+    }
+  })
+}
 
 // 新增用户
-export function addUser(data) {
+export function addUser(body) {
   return request({
-    url: '/system/user',
+    url: '/qd-mall-usercenter/sys-user/addUser',
     method: 'post',
-    data: data
+    data: {
+      body,
+      header:{}
+    }
   })
 }
 
 // 修改用户
-export function updateUser(data) {
+export function updateUser(body) {
   return request({
-    url: '/system/user',
-    method: 'put',
-    data: data
+    url: '/qd-mall-usercenter/sys-user/updateUserById',
+    method: 'post',
+    data: {
+      body,
+      header:{}
+    }
   })
 }
 
 // 删除用户
-export function delUser(userId) {
+export function delUser(data) {
   return request({
-    url: '/system/user/' + userId,
-    method: 'delete'
+    url: '/qd-mall-usercenter/sys-user/deleteUserById',
+    method: 'post',
+    data: data
   })
 }
 
