@@ -58,11 +58,16 @@ export function updateUser(body) {
 }
 
 // 删除用户
-export function delUser(data) {
+export function delUser(id) {
   return request({
     url: '/qd-mall-usercenter/sys-user/deleteUserById',
     method: 'post',
-    data: data
+    data: {
+      body:{
+        id
+      },
+      header:{}
+    }
   })
 }
 

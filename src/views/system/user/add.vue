@@ -58,7 +58,6 @@ export default {
       admin:{
         nickname:'',
         username:'',
-        password:'',
         email:'',
         mobile:'',
         sex:'',
@@ -110,45 +109,42 @@ export default {
     saveUser: function(formName){
       this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$confirm('是否保存数据', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              this.loading=true
-              // 调用保存用户接口
-              if(this.admin.id){
-                // 有id 就是编辑
-                updateUser(this.admin).then(response => {
-                  this.$message({
-                    showClose: true,
-                    message: '编辑成功',
-                    type: 'success',
-                    duration: 1000
-                  });
-                   
-                }).catch(error => {
-                  console.log(error)
-                })
-                 this.loading=false
-                 this.dialogFormVisible=false
-              }else{
-                // 没有id 就是保存
-                addUser(this.admin).then(response => {
-                  this.$message({
-                    showClose: true,
-                    message: '新增成功',
-                    type: 'success',
-                    duration: 1000
-                  });
-                }).catch(error => {
-                  console.log(error)
-                  
-                })
+            
+            this.loading=true
+            // 调用保存用户接口
+            if(this.admin.id){
+              // 有id 就是编辑
+              updateUser(this.admin).then(response => {
+                this.$message({
+                  showClose: true,
+                  message: '编辑成功',
+                  type: 'success',
+                  duration: 1000
+                });
+                this.$parent.getList()
+              }).catch(error => {
+                console.log(error)
+              })
                 this.loading=false
                 this.dialogFormVisible=false
-              }
-            });
+            }else{
+              // 没有id 就是保存
+              addUser(this.admin).then(response => {
+                this.$message({
+                  showClose: true,
+                  message: '新增成功',
+                  type: 'success',
+                  duration: 1000
+                });
+                this.$parent.getList()
+              }).catch(error => {
+                console.log(error)
+                
+              })
+              this.loading=false
+              this.dialogFormVisible=false
+            }
+          
             
           } else {
             console.log('error submit!!');

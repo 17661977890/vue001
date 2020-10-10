@@ -1,13 +1,13 @@
 <template>
   <div class="list-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.body.name" placeholder="请输入姓名" clearable style="width: 200px" class="filter-item"></el-input>
+      <el-input v-model="listQuery.body.nickname" placeholder="请输入昵称" clearable style="width: 200px" class="filter-item"></el-input>
       <el-input v-model="listQuery.body.username" placeholder="请输入账户" clearable style="width: 200px" class="filter-item"></el-input>
-      <el-input v-model="listQuery.body.telphone" placeholder="请输入手机号" clearable  style="width: 200px" class="filter-item"></el-input>
+      <el-input v-model="listQuery.body.mobile" placeholder="请输入手机号" clearable  style="width: 200px" class="filter-item"></el-input>
       <el-select v-model="listQuery.body.sex"  placeholder="性别" clearable style="width: 100px" class="filter-item">
           <el-option v-for="item in sexOptions" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
-      <el-button type="primary" icon="el-icon-search" class="filter-item" >搜索</el-button>
+      <el-button type="primary" icon="el-icon-search" class="filter-item"  @click="getList()">搜索</el-button>
       <el-button type="primary" icon="el-icon-edit" class="filter-item"  @click="addUser()">新增</el-button>
     </div>
     <div>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import {listUser} from '@/api/sys/user'
+import {listUser,delUser} from '@/api/sys/user'
 import UserAdd from './add'
 export default {
   name: "userList",
@@ -66,7 +66,10 @@ export default {
         userList: null,
         listQuery: {
           body:{
-            
+            nickname:null,
+            username:null,
+            mobile:null,
+            sex:null
           },
           header:{
             pageNum: 1,
@@ -78,7 +81,7 @@ export default {
           value: '1',
           label: '男'
         }, {
-          value: '2',
+          value: '0',
           label: '女'
         }],
         value: '',
@@ -111,6 +114,18 @@ export default {
     /** 查询用户列表 */
     getList() {
       this.listLoading = true;
+      if(!this.listQuery.body.nickname){
+        this.listQuery.body.nickname =null;
+      }
+      if(!this.listQuery.body.username){
+        this.listQuery.body.username =null;
+      }
+      if(!this.listQuery.body.mobile){
+        this.listQuery.body.mobile =null;
+      }
+      if(!this.listQuery.body.sex){
+        this.listQuery.body.sex =null;
+      }
       listUser(this.listQuery).then(
         (response) => {
           console.log("用户列表：",response.records)
@@ -136,6 +151,11 @@ export default {
       })
     },
     handleDelete(index, row) {
+      delUser(row.id).then(response => {
+        this.getList()
+      }).catch(error => {
+        console.log(error)
+      })
       console.log(index, row);
     },
     // 分页工具方法
