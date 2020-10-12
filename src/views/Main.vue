@@ -106,18 +106,30 @@
             <i class="el-icon-caret-right" v-show="!close" @click="openMenu"/>
           </span>
           <!-- </span> -->
-          <el-dropdown style="font-size: 20px">
-            <i class="el-icon-setting" style="margin-right: 10px;"></i>
+          
+          <el-dropdown style="font-size: 15px; margin-top: 10px;" trigger="click">
+            <span class="el-dropdown-link">
+              <el-avatar :size="40" src="https://empty" @error="errorHandler" shape="square">
+                <img :src="this.$store.getters.avatar"/>
+              </el-avatar>
+              <i class="el-icon-caret-bottom"></i>
+            </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>查看</el-dropdown-item>
-              <el-dropdown-item>新增</el-dropdown-item>
-              <el-dropdown-item>删除</el-dropdown-item>
+              <div class="user_info">
+                <el-avatar :size="40" src="https://empty" @error="errorHandler" shape="square">
+                  <img :src="this.$store.getters.avatar"/>
+                </el-avatar>
+                <li>{{this.$store.getters.name}}</li>
+                <li>管理员</li>
+              </div>
+              <el-dropdown-item>个人中心</el-dropdown-item>
+              <el-dropdown-item>项目地址</el-dropdown-item>
               <!--重定向-->
               <el-dropdown-item><router-link to="/home">首页</router-link></el-dropdown-item>
-              <el-dropdown-item  @click.native="logout">登出</el-dropdown-item>
+              <el-dropdown-item  @click.native="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <span>{{this.$store.getters.name}}</span>
+          
         </el-header>
         
         <el-main>
@@ -167,6 +179,9 @@ export default {
       this.isCollapse = false;
       this.close = true;
       this.use = false;
+    },
+    errorHandler() {
+      return true
     }
 
   }
@@ -242,7 +257,32 @@ export default {
   .router-link-active {
     text-decoration: none;
   }
-  
+  .el-dropdown-link {
+    cursor: pointer;
+  }
+  .el-dropdown-menu__item {
+    border-top: 1px solid #ebeef5;
+  }
+  .user_info {
+    width: 160px;
+    height: 45px;
+    padding: 6px;
+  }
+  .user_info .el-avatar{
+    float: left;
+    margin: 5px;
+  }
+  .user_info li {
+    width: 100px;
+    float: left;
+    padding: 3px 5px;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>
 <!--解决el-submenu__title:hover 悬浮改变背景色在 scoped不好使-->
 <style lang="scss">
@@ -252,5 +292,5 @@ export default {
   .el-menu-item-group__title {
     padding: 0;
   }
-  
+   
 </style>
