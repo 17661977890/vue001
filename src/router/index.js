@@ -8,6 +8,7 @@ import Main from '@/views/Main'
 import UserList from '@/views/system/user/list'
 import UserAdd from '@/views/system/user/add'
 import NotFound from '@/views/exception/404'
+import home from '@/views/home'
 
 Vue.use(Router)
 // 新建页面需要创建对应的路由
@@ -43,10 +44,16 @@ export default new Router({
           props: true
         },
         {
-          // 重定向
           path: '/home',
-          redirect: '/main'
-        }
+          name: 'home',
+          component: home,
+          props: true
+        },
+        // {
+        //   // 重定向
+        //   path: '/home',
+        //   redirect: '/main'
+        // }
     
       ]
     },

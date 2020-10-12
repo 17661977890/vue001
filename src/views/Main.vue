@@ -7,12 +7,13 @@
            <div class="logo" >
             <img src="../assets/image/logo.png" class="logoImg">
           </div>
-          <el-submenu index="1">
+          <!-- <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-s-data"></i>
-              <span slot="title">首页</span>
+              <span slot="title"><router-link to="/home">首页</router-link></span>
               </template>
-          </el-submenu>
+          </el-submenu> -->
+          <router-link to="/home"><el-menu-item index="1"><i class="el-icon-s-data"></i>首页</el-menu-item></router-link>
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-setting"></i>
@@ -20,7 +21,7 @@
             </template>
             <el-menu-item-group>
               <!--嵌套路由-->
-              <el-menu-item index="2-1"><router-link to="/system/user/list">用户管理</router-link></el-menu-item>
+              <router-link to="/system/user/list"><el-menu-item index="2-1">用户管理</el-menu-item></router-link>
               <el-menu-item index="2-2">角色管理</el-menu-item>
               <el-menu-item index="2-3">菜单管理</el-menu-item>
               <el-menu-item index="2-4">权限管理</el-menu-item>
@@ -252,7 +253,7 @@ export default {
   } */
   a {
     text-decoration: none;
-    color: rgb(23, 152, 226);
+    /* color: rgb(23, 152, 226); */
   }
   .router-link-active {
     text-decoration: none;

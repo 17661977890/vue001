@@ -17,6 +17,7 @@ import axios from 'axios'
 import Vuex from 'vuex'
 import store from './store'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import './icons'
 Vue.prototype.axios=axios
 Vue.config.productionTip = false
 
