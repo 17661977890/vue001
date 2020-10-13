@@ -18,12 +18,14 @@ import Vuex from 'vuex'
 import store from './store'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import './icons'
+import VCharts from 'v-charts'
+
 Vue.prototype.axios=axios
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
 Vue.use(Vuex);
-
+Vue.use(VCharts)
 // 路由钩子函数 -- promission js文件操作
 // router.beforeEach((to,from,next)=>{
 //   console.log("触发路由")

@@ -36,7 +36,25 @@
         </el-col>
       </el-row>
     </div>
-  
+   <div class="total-layout">
+      <el-row :gutter="20">
+        <el-col :span="6" v-for="(item,i) in redList" :key="i">
+          <div class="total-frame">
+            <svg-icon icon-class="order" class="total-icon"></svg-icon>
+            <div class="total-title"></div>
+            <div class="total-value">
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleRed(item.id)">领取红包
+              </el-button>
+            </div>
+            <div class="total-title">{{item.note}}</div>
+          </div>
+        </el-col>
+
+      </el-row>
+    </div>
     <div class="un-handle-layout">
       <div class="layout-title">待处理事务</div>
       <div class="un-handle-content">
@@ -239,9 +257,10 @@
   export default {
     name: 'home',
     data() {
-    
       return {
-      redList:null,
+        redList:[
+          {id:"1",note:"10"}
+        ],
         pickerOptions: {
           shortcuts: [{
             text: '最近一周',
@@ -290,55 +309,41 @@
       this.getData();
     },
     methods:{
-    handleRed(id) {
-               
-              acceptRedPacket(id).then(response => {
-                  
-                this.$message({
-                    message: response.data,
-                    type: 'success',
-                    duration: 1000
-                });
-                    
-
-                
-            });
-            },
+      handleRed(id) {
+        acceptRedPacket(id).then(response => {
+          this.$message({
+              message: response.data,
+              type: 'success',
+              duration: 1000
+          });          
+        });
+      },
       handleDateChange(){
         this.getData();
       },
+      // 初始化订单 数量和日期统计
       initOrderCountDate(){
         orderStatic().then(res => {
-          if(res.code == 200)
-        {
-          this.orderData = res.data;
-          this.orderStatusCount = res.data.orderStatusCount;
-        }
-
-      });
-
+          if(res.code == 200){
+            this.orderData = res.data;
+            this.orderStatusCount = res.data.orderStatusCount;
+          }
+        });
         goodsStatic().then(res => {
-          if(res.code == 200)
-        {
-          this.goods = res.data;
-        }
-
-      });
+          if(res.code == 200){
+            this.goods = res.data;
+          }
+        });
         userStatic().then(res => {
-          if(res.code == 200)
-        {
-          this.user = res.data;
-        }
-         });
-list().then(res => {
-          if(res.code == 200)
-        {
-          this.redList = res.data.list;
-        }
-      });
-
-
-
+          if(res.code == 200){
+            this.user = res.data;
+          }
+        });
+        list().then(res => {
+          if(res.code == 200){
+            this.redList = res.data.list;
+          }
+        });
         let start = new Date();
         start.setFullYear(2018);
         start.setMonth(10);
