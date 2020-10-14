@@ -3,40 +3,47 @@
     <div class="total-layout">
       <el-row :gutter="20">
         <el-col :span="6">
-          <div class="total-frame">
-            <svg-icon icon-class="order" class="total-icon">
-            </svg-icon>
+          <el-card class="total-frame" shadow="hover">
+            <div class="svg_icon">
+              <svg-icon icon-class="order" class="total-icon"></svg-icon>
+            </div>
             <div class="total-title">今日订单数量</div>
             <div class="total-value">{{orderData.nowOrderCount}}</div>
-          </div>
+          </el-card>
         </el-col>
         <el-col :span="6">
-          <div class="total-frame">
-            <svg-icon icon-class="total-today" class="total-icon">
-            </svg-icon>
+          <el-card class="total-frame" shadow="hover">
+            <div class="svg_icon">
+              <svg-icon icon-class="total-today" class="total-icon">
+              </svg-icon>
+            </div>
             <div class="total-title">今日销售总额</div>
-            <div class="total-value">￥{{orderData.nowOrderPay}}</div>
-          </div>
+            <div class="total-value"><svg-icon icon-class="money" class="small-icon"></svg-icon>{{orderData.nowOrderPay}}</div>
+          </el-card>
         </el-col>
         <el-col :span="6">
-          <div class="total-frame">
-            <svg-icon icon-class="total-yesterday" class="total-icon">
-            </svg-icon>
+          <el-card class="total-frame" shadow="hover">
+            <div class="svg_icon">
+              <svg-icon icon-class="total-yesterday" class="total-icon">
+              </svg-icon>
+            </div>
             <div class="total-title">昨日销售总额</div>
-            <div class="total-value">￥{{orderData.yesOrderPay}}</div>
-          </div>
+            <div class="total-value"><svg-icon icon-class="money" class="small-icon"/>{{orderData.yesOrderPay}}</div>
+          </el-card>
         </el-col>
         <el-col :span="6">
-          <div class="total-frame">
-            <svg-icon icon-class="total-week" class="total-icon">
-            </svg-icon>
+          <el-card class="total-frame" shadow="hover">
+            <div class="svg_icon">
+              <svg-icon icon-class="total-week" class="total-icon">
+              </svg-icon>
+            </div>
             <div class="total-title">近7天销售总额</div>
-            <div class="total-value">￥{{orderData.qiOrderPay}}</div>
-          </div>
+            <div class="total-value"><svg-icon icon-class="money" class="small-icon"/>{{orderData.qiOrderPay}}</div>
+          </el-card>
         </el-col>
       </el-row>
     </div>
-   <div class="total-layout">
+   <!-- <div class="total-layout">
       <el-row :gutter="20">
         <el-col :span="6" v-for="(item,i) in redList" :key="i">
           <div class="total-frame">
@@ -53,6 +60,67 @@
           </div>
         </el-col>
 
+      </el-row>
+    </div> -->
+    <div class="overview-layout">
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <div class="out-border">
+            <div class="layout-title">商品总览</div>
+            <div style="padding: 40px">
+              <el-row>
+                <el-col :span="6" class="color-danger overview-item-value">{{goods.offCount}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{goods.onCount}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{goods.nowCount}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{goods.allCount}}</el-col>
+              </el-row>
+              <el-row class="font-medium">
+                <el-col :span="6" class="overview-item-title">已下架</el-col>
+                <el-col :span="6" class="overview-item-title">已上架</el-col>
+                <el-col :span="6" class="overview-item-title">今日新增</el-col>
+                <el-col :span="6" class="overview-item-title">全部商品</el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="out-border">
+            <div class="layout-title">会员总览</div>
+            <div style="padding: 40px">
+              <el-row>
+                <el-col :span="6" class="color-danger overview-item-value">{{member.nowCount}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{member.yesUserCount}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{member.qiUserCount}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{member.allCount}}</el-col>
+              </el-row>
+              <el-row class="font-medium">
+                <el-col :span="6" class="overview-item-title">今日新增</el-col>
+                <el-col :span="6" class="overview-item-title">昨日新增</el-col>
+                <el-col :span="6" class="overview-item-title">本月新增</el-col>
+                <el-col :span="6" class="overview-item-title">会员总数</el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="out-border">
+            <div class="layout-title">商家总览</div>
+            <div style="padding: 40px">
+              <el-row>
+                <el-col :span="6" class="color-danger overview-item-value">{{user.nowCount}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{user.yesUserCount}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{user.qiUserCount}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{user.allCount}}</el-col>
+              </el-row>
+              <el-row class="font-medium">
+                <el-col :span="6" class="overview-item-title">今日新增</el-col>
+                <el-col :span="6" class="overview-item-title">昨日新增</el-col>
+                <el-col :span="6" class="overview-item-title">本月新增</el-col>
+                <el-col :span="6" class="overview-item-title">商家总数</el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-col>
       </el-row>
     </div>
     <div class="un-handle-layout">
@@ -120,48 +188,7 @@
         </el-row>
       </div>
     </div>
-    <div class="overview-layout">
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <div class="out-border">
-            <div class="layout-title">商品总览</div>
-            <div style="padding: 40px">
-              <el-row>
-                <el-col :span="6" class="color-danger overview-item-value">{{goods.offCount}}</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">{{goods.onCount}}</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">{{goods.nowCount}}</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">{{goods.allCount}}</el-col>
-              </el-row>
-              <el-row class="font-medium">
-                <el-col :span="6" class="overview-item-title">已下架</el-col>
-                <el-col :span="6" class="overview-item-title">已上架</el-col>
-                <el-col :span="6" class="overview-item-title">今日新增</el-col>
-                <el-col :span="6" class="overview-item-title">全部商品</el-col>
-              </el-row>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="out-border">
-            <div class="layout-title">用户总览</div>
-            <div style="padding: 40px">
-              <el-row>
-                <el-col :span="6" class="color-danger overview-item-value">{{user.nowCount}}</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">{{user.yesUserCount}}</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">{{user.qiUserCount}}</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">{{user.allCount}}</el-col>
-              </el-row>
-              <el-row class="font-medium">
-                <el-col :span="6" class="overview-item-title">今日新增</el-col>
-                <el-col :span="6" class="overview-item-title">昨日新增</el-col>
-                <el-col :span="6" class="overview-item-title">本月新增</el-col>
-                <el-col :span="6" class="overview-item-title">会员总数</el-col>
-              </el-row>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
+    
     <div class="statistics-layout">
       <div class="layout-title">订单统计</div>
       <el-row>
@@ -169,7 +196,7 @@
           <div style="padding: 20px">
             <div>
               <div style="color: #909399;font-size: 14px">本月订单总数</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.monthOrderCount}}</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderStaticData.monthOrderCount}}</div>
               <div>
                 <span class="color-success" style="font-size: 14px">+10%</span>
                 <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
@@ -177,7 +204,7 @@
             </div>
             <div style="margin-top: 20px;">
               <div style="color: #909399;font-size: 14px">本周订单总数</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.weekOrderCount}}</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderStaticData.weekOrderCount}}</div>
               <div>
                 <span class="color-danger" style="font-size: 14px">-10%</span>
                 <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
@@ -185,7 +212,7 @@
             </div>
             <div style="margin-top: 20px;">
               <div style="color: #909399;font-size: 14px">本月销售总额</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.nowOrderCount}}</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderStaticData.monthSaleCount}}</div>
               <div>
                 <span class="color-success" style="font-size: 14px">+10%</span>
                 <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
@@ -193,7 +220,7 @@
             </div>
             <div style="margin-top: 20px;">
               <div style="color: #909399;font-size: 14px">本周销售总额</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.nowOrderCount}}</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderStaticData.weekSaleCount}}</div>
               <div>
                 <span class="color-danger" style="font-size: 14px">-10%</span>
                 <span style="color: #C0C4CC;font-size: 14px">同比上周</span>
@@ -217,9 +244,9 @@
               :picker-options="pickerOptions">
             </el-date-picker>
             <div>
+              <!-- 属性显示折线图标识项:legend-visible="false"-->
               <ve-line
                 :data="chartData"
-                :legend-visible="false"
                 :loading="loading"
                 :data-empty="dataEmpty"
                 :settings="chartSettings"></ve-line>
@@ -286,9 +313,36 @@
             }
           }]
         },
-        orderData:'',
-        goods:'',
-        user:'',
+        orderData:{
+          nowOrderCount:'10',
+          nowOrderPay: '100',
+          yesOrderPay: '120',
+          qiOrderPay: '820'
+        },
+        orderStaticData:{
+          monthOrderCount:'230',
+          weekOrderCount: '56',
+          monthSaleCount: '850',
+          weekSaleCount: '260'
+        },
+        goods:{
+          offCount:'1',
+          onCount:'15',
+          nowCount:'2',
+          allCount:'16'
+        },
+        user:{
+          nowCount:'1',
+          yesUserCount:'2',
+          qiUserCount:'3',
+          allCount:'100'
+        },
+        member:{
+          nowCount:'1',
+          yesUserCount:'2',
+          qiUserCount:'10',
+          allCount:'15'
+        },
         orderStatusCount:'',
         orderCountDate: '',
         chartSettings: {
@@ -323,27 +377,27 @@
       },
       // 初始化订单 数量和日期统计
       initOrderCountDate(){
-        orderStatic().then(res => {
-          if(res.code == 200){
-            this.orderData = res.data;
-            this.orderStatusCount = res.data.orderStatusCount;
-          }
-        });
-        goodsStatic().then(res => {
-          if(res.code == 200){
-            this.goods = res.data;
-          }
-        });
-        userStatic().then(res => {
-          if(res.code == 200){
-            this.user = res.data;
-          }
-        });
-        list().then(res => {
-          if(res.code == 200){
-            this.redList = res.data.list;
-          }
-        });
+        // orderStatic().then(res => {
+        //   if(res.code == 200){
+        //     this.orderData = res.data;
+        //     this.orderStatusCount = res.data.orderStatusCount;
+        //   }
+        // });
+        // goodsStatic().then(res => {
+        //   if(res.code == 200){
+        //     this.goods = res.data;
+        //   }
+        // });
+        // userStatic().then(res => {
+        //   if(res.code == 200){
+        //     this.user = res.data;
+        //   }
+        // });
+        // list().then(res => {
+        //   if(res.code == 200){
+        //     this.redList = res.data.list;
+        //   }
+        // });
         let start = new Date();
         start.setFullYear(2018);
         start.setMonth(10);
@@ -377,12 +431,12 @@
 
 <style scoped>
   .app-container {
-    margin-top: 40px;
-    margin-left: 120px;
-    margin-right: 120px;
+    background-color: #f0f2f5;
+    padding: 32px;
   }
 
   .total-layout {
+    margin: 15px 10px;
   }
 
   .total-frame {
@@ -390,11 +444,16 @@
     padding: 20px;
     height: 100px;
   }
+  .svg_icon {
+    position: relative;
+    left: -79px;
+    top: 0px;
+  }
 
   .total-icon {
     color: #409EFF;
-    width: 60px;
-    height: 60px;
+    width: 60px !important;
+    height: 60px !important;
   }
 
   .total-title {
@@ -402,20 +461,21 @@
     font-size: 16px;
     color: #909399;
     left: 70px;
-    top: -50px;
+    top: -79px;
   }
 
   .total-value {
     position: relative;
     font-size: 18px;
     color: #606266;
-    left: 70px;
-    top: -40px;
+    left: 62px;
+    top: -56px;
   }
 
   .un-handle-layout {
-    margin-top: 20px;
+    margin: 15px 10px;
     border: 1px solid #DCDFE6;
+    background: rgb(255, 255, 255);
   }
 
   .layout-title {
@@ -435,7 +495,7 @@
   }
 
   .overview-layout {
-    margin-top: 20px;
+     margin: 15px 10px;
   }
 
   .overview-item-value {
@@ -450,10 +510,13 @@
 
   .out-border {
     border: 1px solid #DCDFE6;
+    background: rgb(255, 255, 255);
   }
 
+
   .statistics-layout {
-    margin-top: 20px;
+     margin: 15px 10px;
     border: 1px solid #DCDFE6;
+    background: rgb(255, 255, 255);
   }
 </style>
