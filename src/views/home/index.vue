@@ -124,7 +124,7 @@
       </el-row>
     </div>
     <div class="un-handle-layout">
-      <div class="layout-title">待处理事务</div>
+      <!-- <div class="layout-title">待处理事务</div>
       <div class="un-handle-content">
         <el-row :gutter="20">
           <el-col :span="8">
@@ -186,16 +186,31 @@
             </div>
           </el-col>
         </el-row>
-      </div>
+      </div> -->
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <div class="layout-title">商品销量排行</div>
+          <div>
+            <ve-pie :data="pieChartData" :settings="pieChartSettings"></ve-pie>
+          </div>
+        </el-col>
+
+        <el-col :span="18">
+          <div class="layout-title">近一年订单明细</div>
+          <div>
+            <ve-line :data="orderDetailChartData" :settings="orderDetailChartSettings"></ve-line>
+          </div>
+        </el-col>
+      </el-row>
     </div>
     
     <div class="statistics-layout">
-      <div class="layout-title">订单统计</div>
+      <div class="layout-title">交易走势</div>
       <el-row>
         <el-col :span="4">
           <div style="padding: 20px">
             <div>
-              <div style="color: #909399;font-size: 14px">本月订单总数</div>
+              <div style="color: #909399;font-size: 14px">本月成交订单总数</div>
               <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderStaticData.monthOrderCount}}</div>
               <div>
                 <span class="color-success" style="font-size: 14px">+10%</span>
@@ -203,7 +218,7 @@
               </div>
             </div>
             <div style="margin-top: 20px;">
-              <div style="color: #909399;font-size: 14px">本周订单总数</div>
+              <div style="color: #909399;font-size: 14px">本周成交订单总数</div>
               <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderStaticData.weekOrderCount}}</div>
               <div>
                 <span class="color-danger" style="font-size: 14px">-10%</span>
@@ -281,6 +296,35 @@
       {date: '2018-11-15', orderCount: 40, orderAmount: 4293}
     ]
   };
+  const GOODS_PIE_CHART_DATA = {
+      columns: ['name', 'saleCount'],
+      rows: [
+        { 'name': '服装', 'saleCount': 1393 },
+        { 'name': '烟酒', 'saleCount': 3530 },
+        { 'name': '电子产品', 'saleCount': 2923 },
+        { 'name': '书籍', 'saleCount': 1723 },
+        { 'name': '日用百货', 'saleCount': 3792 },
+        { 'name': '化妆品', 'saleCount': 4593 },
+        { 'name': '运动器械', 'saleCount': 4593 }
+      ]
+  }
+  const ORDER_DETAIL_STATIC_DATA = {
+    columns: ['date', 'toBePaid','toBeShipped','toBeReceived','completed','toBeRefunded','refuned'],
+    rows: [
+      {date: '1月', toBePaid: 0, toBeShipped: 15, toBeReceived: 0, completed: 150, toBeRefunded: 10, refuned: 0},
+      {date: '2月', toBePaid: 0, toBeShipped: 0, toBeReceived: 0, completed: 160, toBeRefunded: 10, refuned: 0},
+      {date: '3月', toBePaid: 0, toBeShipped: 15, toBeReceived: 0, completed: 103, toBeRefunded: 10, refuned: 0},
+      {date: '4月', toBePaid: 0, toBeShipped: 1, toBeReceived: 0, completed: 106, toBeRefunded: 10, refuned: 0},
+      {date: '5月', toBePaid: 0, toBeShipped: 15, toBeReceived: 0, completed: 125, toBeRefunded: 10, refuned: 3},
+      {date: '6月', toBePaid: 0, toBeShipped: 2, toBeReceived: 0, completed: 186, toBeRefunded: 10, refuned: 5},
+      {date: '7月', toBePaid: 0, toBeShipped: 15, toBeReceived: 0, completed: 165, toBeRefunded: 10, refuned: 5},
+      {date: '8月', toBePaid: 0, toBeShipped: 6, toBeReceived: 0, completed: 133, toBeRefunded: 10, refuned: 0},
+      {date: '9月', toBePaid: 0, toBeShipped: 15, toBeReceived: 0, completed: 144, toBeRefunded: 10, refuned: 7},
+      {date: '10月', toBePaid: 0, toBeShipped: 8, toBeReceived: 0, completed: 155, toBeRefunded: 10, refuned: 9},
+      {date: '11月', toBePaid: 0, toBeShipped: 0, toBeReceived: 12, completed: 166, toBeRefunded: 10, refuned: 0},
+      {date: '12月', toBePaid: 0, toBeShipped: 0, toBeReceived: 34, completed: 102, toBeRefunded: 10, refuned: 5}
+    ]
+  };
   export default {
     name: 'home',
     data() {
@@ -349,8 +393,26 @@
           xAxisType: 'time',
           area:true,
           axisSite: { right: ['orderAmount']},
-        labelMap: {'orderCount': '订单数量', 'orderAmount': '订单金额'}},
+        labelMap: {'orderCount': '成交数量', 'orderAmount': '成交金额'}},
         chartData: {
+          columns: [],
+          rows: []
+        },
+        pieChartSettings: {
+          limitShowNum: 5
+        },
+        pieChartData: {
+          columns: [],
+          rows: [
+          ]
+        },
+        orderDetailChartSettings: {
+          xAxisType: 'category',
+          area:true,
+          // axisSite: { right: ['orderAmount']},
+        // 待付款、待发货、待收货、已完成、待退款、已退款
+        labelMap: {'toBePaid': '待付款', 'toBeShipped': '代发货', 'toBeReceived': '待收货', 'completed': '已完成', 'toBeRefunded': '待退款', 'refuned': '已退款'}},
+        orderDetailChartData: {
           columns: [],
           rows: []
         },
@@ -361,6 +423,8 @@
     created(){
       this.initOrderCountDate();
       this.getData();
+      this.getGoodsPieData();
+      this.getOrderDetailLineData();
     },
     methods:{
       handleRed(id) {
@@ -424,6 +488,20 @@
           this.dataEmpty = false;
           this.loading = false
         }, 1000)
+      },
+      getGoodsPieData() {
+        // for(let i=0;i<GOODS_PIE_CHART_DATA.rows.length;i++){
+        //   let item=GOODS_PIE_CHART_DATA.rows[i];
+        //     this.chartData.rows.push(item);
+        // }
+        this.pieChartData = GOODS_PIE_CHART_DATA;
+      },
+      getOrderDetailLineData() {
+        // for(let i=0;i<GOODS_PIE_CHART_DATA.rows.length;i++){
+        //   let item=GOODS_PIE_CHART_DATA.rows[i];
+        //     this.chartData.rows.push(item);
+        // }
+        this.orderDetailChartData = ORDER_DETAIL_STATIC_DATA;
       }
     }
   }

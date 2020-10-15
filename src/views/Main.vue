@@ -3,7 +3,7 @@
     <el-container style="height: 100%; border: 1px solid #eee">
        <el-aside width="auto" >
         <!-- <div> -->
-        <el-menu default-active="2-1" class="el-menu-vertical-demo"  @open="handleOpen" @close="handleClose" :collapse="isCollapse" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu default-active="1" class="el-menu-vertical-demo"  @open="handleOpen" @close="handleClose" :collapse="isCollapse" text-color="#fff" active-text-color="#ffd04b">
            <div class="logo" >
             <img src="../assets/image/logo.png" class="logoImg">
           </div>
@@ -22,7 +22,7 @@
             <el-menu-item-group>
               <!--嵌套路由-->
               <router-link to="/system/user/list"><el-menu-item index="2-1">用户管理</el-menu-item></router-link>
-              <el-menu-item index="2-2">角色管理</el-menu-item>
+              <router-link to="/system/role/list"><el-menu-item index="2-2">角色管理</el-menu-item></router-link>
               <el-menu-item index="2-3">菜单管理</el-menu-item>
               <el-menu-item index="2-4">权限管理</el-menu-item>
             </el-menu-item-group>
@@ -35,6 +35,8 @@
             <el-menu-item-group>
               <el-menu-item index="3-1">会员列表</el-menu-item>
               <el-menu-item index="3-2">会员等级</el-menu-item>
+              <el-menu-item index="3-3">收货地址</el-menu-item>
+              <el-menu-item index="3-4">余额记录</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
             <el-submenu index="4">
@@ -45,7 +47,8 @@
             <el-menu-item-group>
               <el-menu-item index="4-1">订单列表</el-menu-item>
               <el-menu-item index="4-2">发货列表</el-menu-item>
-              <el-menu-item index="4-3">订单设置</el-menu-item>
+              <el-menu-item index="4-3">售后服务</el-menu-item>
+              <el-menu-item index="4-4">运费模板</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="5">
@@ -58,6 +61,7 @@
               <el-menu-item index="5-2">品牌管理</el-menu-item>
               <el-menu-item index="5-3">商品规格</el-menu-item>
               <el-menu-item index="5-4">商品类型</el-menu-item>
+              <el-menu-item index="5-5">商品评价</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
               <el-submenu index="6">
@@ -80,7 +84,7 @@
             <el-menu-item-group>
               <el-menu-item index="7-1">广告管理</el-menu-item>
               <el-menu-item index="7-2">栏目管理</el-menu-item>
-              <el-menu-item index="7-3">网页管理</el-menu-item>
+              <el-menu-item index="7-3">文件库</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
            <el-submenu index="8">

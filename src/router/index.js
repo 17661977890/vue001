@@ -7,6 +7,8 @@ import Reg from '@/views/Reg'
 import Main from '@/views/Main'
 import UserList from '@/views/system/user/list'
 import UserAdd from '@/views/system/user/add'
+import RoleList from '@/views/system/role/list'
+import RoleAdd from '@/views/system/role/add'
 import NotFound from '@/views/exception/404'
 import home from '@/views/home'
 
@@ -32,7 +34,7 @@ export default new Router({
       component: Main,
       children: [
         {
-          // 路由传参 两种形式
+          // 用户管理
           path: '/system/user/add',
           name: 'UserAdd',
           component: UserAdd,
@@ -42,6 +44,17 @@ export default new Router({
           name: 'UserList',
           component: UserList,
           props: true
+        },
+        {
+          // 角色管理
+          path: '/system/role/add',
+          name: 'RoleAdd',
+          component: RoleAdd,
+        },
+        {
+          path: '/system/role/list',
+          name: 'RoleList',
+          component: RoleList,
         },
         {
           path: '/home',
