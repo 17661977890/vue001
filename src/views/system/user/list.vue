@@ -54,16 +54,19 @@
       </el-pagination>
     </div>
     <UserAdd v-if="addOrUpdateVisible" ref="userAdd"></UserAdd>
+    <UserRole v-if="addOrUpdateVisible" ref="userRole"></UserRole>
   </div>
 </template>
 
 <script>
 import {listUser,delUser} from '@/api/sys/user'
 import UserAdd from './add'
+import UserRole from './UserRole'
 export default {
   name: "userList",
   components:{
-    UserAdd
+    UserAdd,
+    UserRole
   },
   data() {
       return {
@@ -155,7 +158,12 @@ export default {
       })
     },
     handleAllotRole(index,row) {
-      alert("分配角色")
+      // alert("分配角色")
+      this.addOrUpdateVisible=true,
+      this.$nextTick(()=>{
+        this.$refs.userRole.init(row.id)
+      })
+     
     },
     handleDelete(index, row) {
       delUser(row.id).then(response => {

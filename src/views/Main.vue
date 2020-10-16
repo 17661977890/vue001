@@ -23,7 +23,7 @@
               <!--嵌套路由-->
               <router-link to="/system/user/list"><el-menu-item index="2-1">用户管理</el-menu-item></router-link>
               <router-link to="/system/role/list"><el-menu-item index="2-2">角色管理</el-menu-item></router-link>
-              <el-menu-item index="2-3">菜单管理</el-menu-item>
+              <router-link to="/system/source/list"><el-menu-item index="2-3">菜单管理</el-menu-item></router-link>
               <el-menu-item index="2-4">权限管理</el-menu-item>
             </el-menu-item-group>
           </el-submenu>

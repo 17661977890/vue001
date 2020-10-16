@@ -9,6 +9,8 @@ import UserList from '@/views/system/user/list'
 import UserAdd from '@/views/system/user/add'
 import RoleList from '@/views/system/role/list'
 import RoleAdd from '@/views/system/role/add'
+import SourceList from '@/views/system/source/list'
+import SourceAdd from '@/views/system/source/add'
 import NotFound from '@/views/exception/404'
 import home from '@/views/home'
 
@@ -55,6 +57,17 @@ export default new Router({
           path: '/system/role/list',
           name: 'RoleList',
           component: RoleList,
+        },
+        {
+          // 资源管理
+          path: '/system/source/add',
+          name: 'SourceAdd',
+          component: SourceAdd,
+        },
+        {
+          path: '/system/source/list',
+          name: 'SourceList',
+          component: SourceList,
         },
         {
           path: '/home',
