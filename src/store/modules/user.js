@@ -37,7 +37,7 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
-            console.log("请求结果："+response)
+            // console.log("请求结果："+response)
             if (response.access_token) {
                 setToken(response.access_token);
                 commit('SET_TOKEN', response.access_token);
@@ -52,7 +52,7 @@ const user = {
     SmsLogin({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         smslogin(userInfo.phone,userInfo.code,userInfo.smsCodeId,userInfo.platformType,userInfo.businessType,userInfo.receiveTerminalType).then(response => {
-            console.log("请求结果："+response)
+            // console.log("请求结果："+response)
             if (response.access_token) {
                 setToken(response.access_token);
                 commit('SET_TOKEN', response.access_token);
@@ -68,7 +68,7 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
-          console.log("获取用户信息返回："+JSON.stringify(response))
+          // console.log("获取用户信息返回："+JSON.stringify(response))
           const data = response
           // if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
           //   commit('SET_ROLES', data.roles)

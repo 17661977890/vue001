@@ -47,16 +47,19 @@
       </el-pagination>
     </div>
     <RoleAdd v-if="addOrUpdateVisible" ref="roleAdd"></RoleAdd>
+    <RoleSource v-if="addOrUpdateVisible" ref="userRole"></RoleSource>
   </div>
 </template>
 
 <script>
 import {listRole,delRole} from '@/api/sys/role'
 import RoleAdd from './add'
+import RoleSource from './RoleSource'
 export default {
   name: "roleList",
   components:{
-    RoleAdd
+    RoleAdd,
+    RoleSource
   },
   data() {
       return {
@@ -118,7 +121,11 @@ export default {
     },
     handleAllotPermission(index, row) {
       console.log(index, row);
-      alert("分配权限")
+      // alert("分配权限")
+      this.addOrUpdateVisible=true,
+      this.$nextTick(()=>{
+        this.$refs.userRole.init(row.id)
+      })
     },
     handleDelete(index, row) {
       delRole(row.id).then(response => {

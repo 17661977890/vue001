@@ -12,20 +12,16 @@
       
     </div>
     <div>
-      <!-- 参数选项： 默认展开树default-expand-all hasChildren 后边的值随便 如果和接口出参属性名一样 就不会显示子节点 -->
+      <!-- 参数选项： 默认展开树default-expand-all -->
     <el-table 
+      row-key="id"
+      :tree-props="{children: 'children', hasChildren: 'sss'}"
       :data="sourceTreeList" 
       ref="multipleTable" 
       tooltip-effect="dark" 
       style="width: 100%" 
-      border
-      row-key="id"
-      :tree-props="{children: 'children', hasChildren: 'XXX'}"
-      @select="rowSelect"
-      @select-all="selectAll"
-      @selection-change="handleSelectionChange"  
+      border 
       v-loading="listLoading">
-      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column type="index" :index="indexMethod" label="序号" width="80"></el-table-column>
       <el-table-column prop="sourceName" label="资源名称" align="center"></el-table-column>
       <el-table-column prop="parentName" label="上级资源" align="center"></el-table-column>
@@ -59,79 +55,13 @@
       </el-table-column>
     </el-table>
     </div>
-    <SourceAdd v-if="addOrUpdateVisible" ref="sourceAdd"></SourceAdd>
   </div>
 </template>
 
 <script>
 import {TreelistSource,delSource,updateShowStatus} from '@/api/sys/source'
-import SourceAdd from './add'
-const TREE_LIST =
-      [{
-          id: "1",
-          parentName: '',
-          sourceName: '首页',
-          sourceType: 1,
-          url:'/home',
-          sort:0,
-          showFlag:'Y',
-          children: [],
-          hasChildren: false
-        }, {
-          id: "2",
-          parentName: '',
-          sourceName: '系统管理',
-          sourceType: 1,
-          url:'/system',
-          sort:1,
-          showFlag:'Y',
-          children: [],
-           hasChildren: false
-        }, {
-          id: "515937101326319617",
-          parentName: '',
-          sourceName: '会员管理',
-          sourceType: 1,
-          url:'/member',
-          sort:2,
-          showFlag:'Y',
-           hasChildren: true,
-          children: [{
-              id: 31,
-              parentName: '会员管理',
-              sourceName: '会员列表',
-              sourceType: 2,
-              url:'/list',
-              sort:21,
-              showFlag:'Y',
-              children: [],
-               hasChildren: false
-            }, {
-              id: 32,
-              parentName: '会员管理',
-              sourceName: '会员等级',
-              sourceType: 2,
-              url:'level',
-              sort:22,
-              showFlag:'Y',
-               hasChildren: false
-          }]
-        }, {
-          id: 4,
-          parentName: '',
-          sourceName: '订单管理',
-          sourceType: 1,
-          url:'/order',
-          sort:3,
-          showFlag:'N',
-          children: [],
-           hasChildren: false
-        }]
 export default {
-  name: "sourceList",
-  components:{
-    SourceAdd
-  },
+  name: "PermissionList",
   data() {
       return {
         sourceTreeList: [],
@@ -180,8 +110,6 @@ export default {
         (response) => {
           console.log("菜单列表：",response)
           this.sourceTreeList = response;
-          // this.sourceTreeList = TREE_LIST;
-          console.log("菜单列表：",TREE_LIST)
           this.listLoading = false;
         }
       );
@@ -189,44 +117,6 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    toggleSelection(rows, flag) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row, flag);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
-    },
-    rowSelect(selection, row) {
-      if (selection.indexOf(row) > -1 && row.sourceType === 1) {
-        this.toggleSelection(row.children, true);
-      }
-      if (selection.indexOf(row) === -1 && row.sourceType === 1) {
-        this.toggleSelection(row.children, false);
-      }
-      if (selection.indexOf(row) > -1 && row.sourceType === 2) {
-        let s = this.sourceTreeList.filter(item => {
-          if (item.id === row.parentId) {
-            return item;
-          }
-        });
-        this.toggleSelection(s, true);
-      }
-    },
-    selectAll(selection) {
-      var flag = false; // 默认 为全不选
-      selection.forEach(item => {
-        if (item.sourceType === 1) {
-          flag = true;
-          this.toggleSelection(item.children, true);
-        }
-      });
-      if (!flag) {
-        this.toggleSelection();
-      }
-    },
-
     indexMethod(index) {
         return index+1;
     },

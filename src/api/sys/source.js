@@ -1,10 +1,20 @@
 import request from '@/utils/request'
 
 
+// 查询资源列表Tree
+export function TreelistSource(query) {
+  return request({
+    url: '/qd-mall-usercenter/sys-source/getTreeList',
+    method: 'post',
+    data: query
+  })
+}
+
+
 // 查询资源列表
 export function listSource(query) {
   return request({
-    url: '/qd-mall-usercenter/sys-source/queryPage',
+    url: '/qd-mall-usercenter/sys-source/getListBy',
     method: 'post',
     data: query
   })

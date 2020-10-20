@@ -18,8 +18,8 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   // 是否需要设置 token
   const isToken = (config.headers || {}).isToken === false
-  console.log(isToken)
-  console.log(getToken())
+  // console.log(isToken)
+  // console.log(getToken())
   if (getToken() && !isToken) {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }else{
@@ -34,7 +34,7 @@ service.interceptors.request.use(config => {
 
 // 响应拦截器
 service.interceptors.response.use(res => {
-    console.log("请求获取token 结果："+res.data)
+    // console.log("请求获取token 结果："+res.data)
     // 未设置状态码则默认成功状态
     const code = res.data.header.code || '200';
     // 获取错误信息
@@ -62,7 +62,7 @@ service.interceptors.response.use(res => {
       })
       return Promise.reject('error')
     } else {
-      console.log("接口响应结果："+JSON.stringify(res.data.body))
+      // console.log("接口响应结果："+JSON.stringify(res.data.body))
       return res.data.body
     }
   },
