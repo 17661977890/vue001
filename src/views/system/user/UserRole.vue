@@ -10,8 +10,8 @@
       
     </div>
     <div>
-    <el-table :data="roleList" ref="multipleTable" tooltip-effect="dark" style="width: 100%" border  @selection-change="handleSelectionChange"  v-loading="listLoading">
-      <el-table-column type="selection" width="55"></el-table-column>
+    <el-table :data="roleList" ref="multipleTable" tooltip-effect="dark" style="width: 100%" border  @selection-change="handleSelectionChange"  :row-key="getRowKey" v-loading="listLoading">
+      <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
       <el-table-column type="index" :index="indexMethod" label="序号" width="80"></el-table-column>
       <el-table-column prop="roleCode" label="角色编码" align="center"></el-table-column>
       <el-table-column prop="roleName" label="角色名称" align="center"></el-table-column>
@@ -22,9 +22,9 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="listQuery.pageNum"
+        :current-page.sync="listQuery.header.pageNum"
         :page-sizes="[10, 20, 30, 40]"
-        :page-size="listQuery.pageSize"
+        :page-size="listQuery.header.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
@@ -39,11 +39,12 @@
 
 <script>
 import {listRole} from '@/api/sys/role'
+import {saveUserRole,queryRoleByUser} from '@/api/sys/userRole'
 export default {
   name: "UserRole",
   data() {
       return {
-        roleList: null,
+        roleList: [],
         listQuery: {
           body:{
             roleCode:null,
@@ -59,7 +60,8 @@ export default {
         listLoading: true,
         multipleSelection: [],
         total: null,
-        loading:false
+        loading:false,
+        userId:''
       }
   },
   created() {
@@ -67,12 +69,16 @@ export default {
   },
   methods: {
      init: function(id){
-       let userId = id;
-      
+      this.userId = id;
       this.dialogFormVisible=true
+      this.getList();
+      this.getRoleByUserId();
     },
     cancel: function(){
       this.dialogFormVisible=false
+    },
+    getRowKey (row) {
+      return row.id
     },
     
     /** 查询角色列表 */
@@ -86,7 +92,6 @@ export default {
       }
       listRole(this.listQuery).then(
         (response) => {
-          console.log("角色列表：",response.records)
           this.roleList = response.records;
           this.total = response.total;
           this.totalPage = response.pages;
@@ -95,14 +100,38 @@ export default {
         }
       );
     },
+    getRoleByUserId() {
+      queryRoleByUser(this.userId).then((response)=>{
+        let newrole=[]
+        console.log("用户的角色列表：",response)
+        if(response.length>0){
+          for(let i = 0;i < response.length;i++){
+              for(let j = 0;j < this.roleList.length;j++){
+                if(response[i].id == this.roleList[j].id){
+                    newrole.push(this.roleList[j])
+                }
+              }
+          }
+          this.$nextTick(()=>{
+            for(let i = 0;i < newrole.length;i++){
+              this.$refs.multipleTable.toggleRowSelection(newrole[i],true);
+ 
+          };
+         })
+        }else{
+          this.$refs.multipleTable.clearSelection();
+        }
+        
+      })
+    },
+
     handleSelectionChange(val) {
       this.multipleSelection = val;
       // 遍历 进行 角色id数组的组装，进行角色分配 
       console.log("选中角色：",this.multipleSelection)
-      console.log("选中角色：",this.multipleSelection[0].id)
     },
     indexMethod(index) {
-        return index+1;
+      return index+1;
     },
     // 分页工具方法
     handleSizeChange(val) {
@@ -116,7 +145,34 @@ export default {
     },
 
     addUserRole(){
-      alert("确定分配角色")
+      // alert("确定分配角色")
+      this.loading = true
+      let ids=[];
+      for(let i=0;i<this.multipleSelection.length;i++){
+        ids.push(this.multipleSelection[i].id);
+      }
+      var param = {
+        roleIdList:[],
+        userId:''
+      }
+      param.roleIdList=ids
+      param.userId=this.userId
+      saveUserRole(param).then(response => {
+        this.$message({
+            message: '保存成功',
+            type: 'success',
+            duration: 1000
+        });
+        this.loading = false
+        this.dialogFormVisible=false
+      }).catch(error => {
+        this.loading = false
+        this.$message({
+            message: '保存失败',
+            type: 'error',
+            duration: 1000
+        });
+      });
     }
   }
 }
