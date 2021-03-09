@@ -14,8 +14,8 @@
       
     </div>
     <div>
-    <el-table :data="userList" ref="multipleTable" tooltip-effect="dark" style="width: 100%" border  @selection-change="handleSelectionChange"  v-loading="listLoading">
-      <el-table-column type="selection" width="55"></el-table-column>
+    <el-table :data="userList" ref="multipleTable" tooltip-effect="dark" style="width: 100%" border  @selection-change="handleSelectionChange" :row-key="getRowKey" v-loading="listLoading">
+      <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
       <el-table-column type="index" :index="indexMethod" label="序号" width="80"></el-table-column>
       <el-table-column prop="username" label="账户" align="center"></el-table-column>
       <el-table-column prop="nickname" label="昵称" align="center"></el-table-column>
@@ -42,9 +42,9 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="listQuery.pageNum"
+        :current-page.sync="listQuery.header.pageNum"
         :page-sizes="[10, 20, 30, 40]"
-        :page-size="listQuery.pageSize"
+        :page-size="listQuery.header.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
@@ -136,6 +136,9 @@ export default {
           this.listLoading = false;
         }
       );
+    },
+    getRowKey (row) {
+      return row.id
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;

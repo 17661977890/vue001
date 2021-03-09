@@ -11,6 +11,7 @@ import RoleList from '@/views/system/role/list'
 import RoleAdd from '@/views/system/role/add'
 import SourceList from '@/views/system/source/list'
 import SourceAdd from '@/views/system/source/add'
+import PermissionList from '@/views/system/permission/list'
 import NotFound from '@/views/exception/404'
 import home from '@/views/home'
 
@@ -68,6 +69,12 @@ export default new Router({
           path: '/system/source/list',
           name: 'SourceList',
           component: SourceList,
+        },
+        {
+          // 权限管理
+          path: '/system/permission/list',
+          name: 'PermissionList',
+          component: PermissionList,
         },
         {
           path: '/home',

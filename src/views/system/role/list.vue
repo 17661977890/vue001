@@ -10,8 +10,8 @@
       
     </div>
     <div>
-    <el-table :data="roleList" ref="multipleTable" tooltip-effect="dark" style="width: 100%" border  @selection-change="handleSelectionChange"  v-loading="listLoading">
-      <el-table-column type="selection" width="55"></el-table-column>
+    <el-table :data="roleList" ref="multipleTable" tooltip-effect="dark" style="width: 100%" border  @selection-change="handleSelectionChange"  :row-key="getRowKey" v-loading="listLoading">
+      <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
       <el-table-column type="index" :index="indexMethod" label="序号" width="80"></el-table-column>
       <el-table-column prop="roleCode" label="角色编码" align="center"></el-table-column>
       <el-table-column prop="roleName" label="角色名称" align="center"></el-table-column>
@@ -39,28 +39,31 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="listQuery.pageNum"
+        :current-page.sync="listQuery.header.pageNum"
         :page-sizes="[10, 20, 30, 40]"
-        :page-size="listQuery.pageSize"
+        :page-size="listQuery.header.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
     </div>
     <RoleAdd v-if="addOrUpdateVisible" ref="roleAdd"></RoleAdd>
+    <RoleSource v-if="addOrUpdateVisible" ref="userRole"></RoleSource>
   </div>
 </template>
 
 <script>
 import {listRole,delRole} from '@/api/sys/role'
 import RoleAdd from './add'
+import RoleSource from './RoleSource'
 export default {
   name: "roleList",
   components:{
-    RoleAdd
+    RoleAdd,
+    RoleSource
   },
   data() {
       return {
-        roleList: null,
+        roleList: [],
         listQuery: {
           body:{
             roleCode:null,
@@ -103,6 +106,9 @@ export default {
         }
       );
     },
+    getRowKey (row) {
+      return row.id
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
@@ -118,7 +124,11 @@ export default {
     },
     handleAllotPermission(index, row) {
       console.log(index, row);
-      alert("分配权限")
+      // alert("分配权限")
+      this.addOrUpdateVisible=true,
+      this.$nextTick(()=>{
+        this.$refs.userRole.init(row.id)
+      })
     },
     handleDelete(index, row) {
       delRole(row.id).then(response => {

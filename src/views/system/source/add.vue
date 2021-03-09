@@ -7,14 +7,21 @@
       <el-form-item label="资源url：" prop="url">
         <el-input v-model="admin.url"></el-input>
       </el-form-item>
-      <el-form-item label="上级资源：" prop="parentName" >
-        <el-input v-model="admin.parentName"></el-input>
-      </el-form-item>
       <el-form-item label="排序号：" prop="sort">
         <el-input v-model="admin.sort"></el-input>
       </el-form-item>
+      <el-form-item label="上级资源：" prop="parentId" v-show="parentShow">
+        <el-select v-model="admin.parentId" clearable placeholder="请选择" @change="changeParent(admin.parentId)">
+          <el-option
+            v-for="item in sourceList"
+            :key="item.id"
+            :label="item.sourceName"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="资源类型：" prop="sourceType" >
-        <el-radio-group v-model="admin.sourceType">
+        <el-radio-group v-model="admin.sourceType" @change="changeSourceType(admin.sourceType)">
           <el-radio :label="1">目录</el-radio>
           <el-radio :label="2">菜单</el-radio>
           <el-radio :label="3">按钮</el-radio>
@@ -22,8 +29,8 @@
       </el-form-item>
       <el-form-item label="是否显示" prop="showFlag" >
         <el-radio-group v-model="admin.showFlag">
-          <el-radio :label="1">显示</el-radio>
-          <el-radio :label="0">隐藏</el-radio>
+          <el-radio label="Y">显示</el-radio>
+          <el-radio label="N">隐藏</el-radio>
           
         </el-radio-group>
       </el-form-item>
@@ -36,7 +43,7 @@
 </template>
 
 <script>
-import {addSource, updateSource,getSourceInfo} from '@/api/sys/source'
+import {addSource, updateSource,getSourceInfo,listSource} from '@/api/sys/source'
 export default {
   name: "SoruceAdd",
   data(){
@@ -44,15 +51,26 @@ export default {
       admin:{
         sourceName:'',
         url:'',
-        parentName:'',
+        parentId:'',
         sort:'',
         sourceType:'',
         showFlag:'',
         parentId:'',
         id:''
       },
+      sourceList:[],
       dialogFormVisible: false,
       loading: false,
+      parentShow: false,
+      listQuery: {
+        body:{
+          sourceType:null
+        },
+        header:{
+        }
+      },
+
+
       rules: {
         sourceName: [
           { required: true, message: '请输入资源名称', trigger: 'blur' }
@@ -79,11 +97,46 @@ export default {
          this.$refs.SourceForm.resetFields();
       }else{
         console.log("编辑：",this.admin.id)
-        getUserInfo(this.admin.id).then(response => {
+        getSourceInfo(this.admin.id).then(response => {
           this.admin = response;
         });
       
       }
+    },
+     /** 根据类型查询资源列表 */
+    getList() {
+      if(!this.listQuery.body.sourceType){
+        this.listQuery.body.sourceType =null;
+      }
+      listSource(this.listQuery).then(
+        (response) => {
+          console.log("菜单列表：",response)
+          this.sourceList = response;
+        }
+      );
+    },
+    changeParent:function(val){
+      let resultArr = this.sourceList.filter((item)=>{
+        return item.id === val
+      });
+      //把值赋给要传给后台的表单对象中
+      this.admin.parentId = resultArr[0].id;
+      this.admin.parentName = resultArr[0].sourceName;
+      console.log("选择父资源：",this.admin.parentName)
+    },
+    changeSourceType: function(val){
+      console.log("选择资源类型：",val)
+      this.parentShow=(val===1)?false:true;
+      if(val===2){
+        this.listQuery.body.sourceType = 1
+        this.getList();
+      }
+      if(val===3){
+        this.listQuery.body.sourceType = 2
+        this.getList();
+      }
+
+      
     },
     cancel: function(){
       this.dialogFormVisible=false
