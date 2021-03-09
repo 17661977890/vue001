@@ -47,7 +47,7 @@
       </el-pagination>
     </div>
     <RoleAdd v-if="addOrUpdateVisible" ref="roleAdd"></RoleAdd>
-    <RoleSource v-if="addOrUpdateVisible" ref="userRole"></RoleSource>
+    <RoleSource v-if="addOrUpdateVisible" ref="roleSource"></RoleSource>
   </div>
 </template>
 
@@ -127,7 +127,7 @@ export default {
       // alert("分配权限")
       this.addOrUpdateVisible=true,
       this.$nextTick(()=>{
-        this.$refs.userRole.init(row.id)
+        this.$refs.roleSource.init(row.id)
       })
     },
     handleDelete(index, row) {
