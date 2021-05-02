@@ -23,12 +23,16 @@
       <el-table-column prop="type" label="类型" align="center"></el-table-column>
       <el-table-column prop="sex" label="性别" align="center" :formatter="formatSex"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
-      <el-table-column label="操作" width="200" align="center">
+      <el-table-column label="操作" width="300" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="primary"
             @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit">编辑</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="handleAllotRole(scope.$index, scope.row)" icon="el-icon-edit">分配角色</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -50,16 +54,19 @@
       </el-pagination>
     </div>
     <UserAdd v-if="addOrUpdateVisible" ref="userAdd"></UserAdd>
+    <UserRole v-if="addOrUpdateVisible" ref="userRole"></UserRole>
   </div>
 </template>
 
 <script>
 import {listUser,delUser} from '@/api/sys/user'
 import UserAdd from './add'
+import UserRole from './UserRole'
 export default {
   name: "userList",
   components:{
-    UserAdd
+    UserAdd,
+    UserRole
   },
   data() {
       return {
@@ -151,6 +158,13 @@ export default {
        this.addOrUpdateVisible=true,
       this.$nextTick(()=>{
         this.$refs.userAdd.init(row.id)
+      })
+    },
+     handleAllotRole(index, row) {
+      console.log(index, row);
+      this.addOrUpdateVisible=true,
+      this.$nextTick(()=>{
+        this.$refs.userRole.init(row.id)
       })
     },
     handleDelete(index, row) {

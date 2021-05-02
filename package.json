@@ -19,6 +19,7 @@
     "element-ui": "^2.13.2",
     "js-cookie": "^2.2.1",
     "nprogress": "^0.2.0",
+    "screenfull": "^5.1.0",
     "v-charts": "^1.19.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

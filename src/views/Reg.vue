@@ -243,7 +243,7 @@ export default {
     
   }
   .reg-form-box {
-    width: 400px;
+    width: 450px;
     border: 1px solid #DCDFE6;
     margin: 0 auto;
     margin-top: 160px;
@@ -253,7 +253,7 @@ export default {
     box-shadow: 0 0 20px;
     position: absolute;
     top: 15%;
-    left: 63%;
+    left: 50%;
   }
   .reg-button {
     width: 322px;

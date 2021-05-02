@@ -524,8 +524,8 @@
   }
   .svg_icon {
     position: relative;
-    left: -79px;
-    top: 0px;
+    left: -19px;
+    top: -10px;
   }
 
   .total-icon {

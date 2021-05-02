@@ -44,7 +44,7 @@ export default {
     this.getTreeList();
   },
   methods: {
-     init: function(id){
+    init: function(id){
         let roleId = id;
         this.dialogFormVisible=true
     },

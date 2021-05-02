@@ -147,7 +147,7 @@ export default {
               console.log("登录成功")
               sessionStorage.setItem('isLogin','true')
               
-              this.$router.push("/main")
+              this.$router.push("/dashboard")
             }).catch((e)=>{
               console.log("登录失败:"+e)
               this.loading=false
@@ -179,7 +179,7 @@ export default {
               console.log("登录成功")
               sessionStorage.setItem('isLogin','true')
               
-              this.$router.push("/main")
+              this.$router.push("/dashboard")
             }).catch((e)=>{
               console.log("登录失败:"+e)
               this.loading=false
@@ -302,7 +302,7 @@ export default {
     
   }
   .login-form-box {
-    width: 400px;
+    width: 453px;
     border: 1px solid #DCDFE6;
     margin: 0 auto;
     margin-top: 160px;
@@ -312,7 +312,7 @@ export default {
     box-shadow: 0 0 20px;
     position: absolute;
     top: 15%;
-    left: 63%;
+    left: 50%;
   }
   .login-button {
     width: 150px;
