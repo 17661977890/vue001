@@ -184,8 +184,7 @@ export default {
   vertical-align: middle;
   margin-bottom: 10px;
   margin: 0 5px 10px 0;
-  float: left;
-  
+  float: left;  
 }
 .pagination-container{
     background: #fff;
