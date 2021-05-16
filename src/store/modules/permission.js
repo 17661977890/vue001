@@ -1,13 +1,15 @@
 import { asyncRoutes, constantRoutes } from '@/router'
-
+import { querySourceByRoles } from '@/api/sys/roleSource'
 /**
  * Use meta.role to determine if the current user has permission
  * @param roles
  * @param route
  */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.includes(role))
+function hasPermission(sources, route) {
+  console.log(route.name)
+  if (route.name) {
+    console.log(sources.some(source => route.name===source))
+    return sources.some(source => route.name==source)
   } else {
     return true
   }
@@ -18,19 +20,17 @@ function hasPermission(roles, route) {
  * @param routes asyncRoutes
  * @param roles
  */
-export function filterAsyncRoutes(routes, roles) {
+export function filterAsyncRoutes(routes, sources) {
   const res = []
-
   routes.forEach(route => {
     const tmp = { ...route }
-    if (hasPermission(roles, tmp)) {
+    if (hasPermission(sources, tmp)) {
       if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, roles)
+        tmp.children = filterAsyncRoutes(tmp.children, sources)
       }
       res.push(tmp)
     }
   })
-
   return res
 }
 
@@ -48,20 +48,29 @@ const mutations = {
       state.routes = constantRoutes
     }
     
-    console.log(state.routes)
+    console.log("登录用户所有可见资源:",state.routes)
   }
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
+  generateRoutes({ commit }, res) {
+    const roles = [];
+    const sources = [];
+    res.roleVoList.forEach(element => {
+      roles.push(element.id);
+    });
+    res.sourceList.forEach(element =>{
+      sources.push(element.sourceCode)
+    })
     return new Promise(resolve => {
       let accessedRoutes;
-      console.log("登录用户角色：",roles)
+      console.log("登录用户角色：",roles,"授权资源：",sources)
       if(roles){
-        if (roles.includes('admin')) {
+        //roles.includes('admin')
+        if (roles.includes("1")) {
           accessedRoutes = asyncRoutes || []
         } else {
-          accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+          accessedRoutes = filterAsyncRoutes(asyncRoutes, sources)
         }
         
       }

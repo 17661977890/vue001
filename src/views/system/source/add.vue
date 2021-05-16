@@ -4,6 +4,9 @@
       <el-form-item label="资源名称：" prop="sourceName">
         <el-input v-model="admin.sourceName"></el-input>
       </el-form-item>
+      <el-form-item label="资源code：" prop="sourceCode">
+        <el-input v-model="admin.sourceCode"></el-input>
+      </el-form-item>
       <el-form-item label="资源url：" prop="url">
         <el-input v-model="admin.url"></el-input>
       </el-form-item>
@@ -50,6 +53,7 @@ export default {
     return{
       admin:{
         sourceName:'',
+        sourceCode:'',
         url:'',
         parentId:'',
         sort:'',
@@ -75,6 +79,9 @@ export default {
         sourceName: [
           { required: true, message: '请输入资源名称', trigger: 'blur' }
         ],
+        sourceCode: [
+          { required: true, message: '请输入资源code', trigger: 'blur' }
+        ],
         sort: [
           { required: true, message: '请输入排序号', trigger: 'blur' }
         ],
@@ -94,11 +101,24 @@ export default {
       this.dialogFormVisible=true
       if(!id){
          console.log("新增:",this.admin.id)
+         this.parentShow=false;
          this.$refs.SourceForm.resetFields();
       }else{
         console.log("编辑：",this.admin.id)
         getSourceInfo(this.admin.id).then(response => {
           this.admin = response;
+          if(this.admin.sourceType === 1){
+            this.parentShow=false;
+          }else{
+            
+            if(this.admin.sourceType === 3){
+              this.listQuery.body.sourceType = 2
+            }else{
+              this.listQuery.body.sourceType = 1
+            }
+            this.getList();
+            this.parentShow=true;
+          }
         });
       
       }

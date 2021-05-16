@@ -28,6 +28,7 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column type="index" :index="indexMethod" label="序号" width="80"></el-table-column>
       <el-table-column prop="sourceName" label="资源名称" align="center"></el-table-column>
+      <el-table-column prop="sourceCode" label="资源code" align="center"></el-table-column>
       <el-table-column prop="parentName" label="上级资源" align="center"></el-table-column>
       <el-table-column prop="sourceType" label="资源类型" align="center" :formatter="formatType"></el-table-column>
       <el-table-column prop="url" label="资源url" align="center"></el-table-column>

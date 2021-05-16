@@ -101,7 +101,7 @@ export const asyncRoutes = [
   {
     path: '/system',
     component: Layout,
-    redirect: '/systemc/user/list',
+    redirect: '/system/user/list',
     name: 'System',
     meta: {
       title: '系统管理',
@@ -194,7 +194,7 @@ export const asyncRoutes = [
 
   
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', name:404, hidden: true }
 ]
 
 const createRouter = () => new Router({

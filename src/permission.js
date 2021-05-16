@@ -18,12 +18,9 @@ router.beforeEach((to, from, next) => {
       if (store.getters.roles.length === 0) {
         store.dispatch('GetInfo').then(res => { // 拉取用户信息
           console.log("登录用户信息："+JSON.stringify(res))
-          const roles = []
-          res.roleVoList.forEach(element => {
-            roles.push(element.roleCode);
-          });
+          
           // 获取路由
-          store.dispatch('permission/generateRoutes',roles).then(res=> {
+          store.dispatch('permission/generateRoutes',res).then(res=> {
             const accessRoutes =res;
             // dynamically add accessible routes
             router.addRoutes(accessRoutes)
