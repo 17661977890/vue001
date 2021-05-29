@@ -84,7 +84,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'index',
+        path: 'documentation',
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
         meta: { title: '文档', icon: 'documentation', affix: true }

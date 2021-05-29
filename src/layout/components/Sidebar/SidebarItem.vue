@@ -57,8 +57,14 @@ export default {
     return {}
   },
   methods: {
+    // 过滤路由数组，把不隐藏的路由子节点过滤出来，判断数目，
+    // 如果最终只有一个子节点，即为onlyOneChild ，hasOneShowingChild 返回true，则不显示父目录，直接显示子目录。
+    // 如果没有子节点，hasOneShowingChild 返回true，则不显示父目录，子目录也不显示
+    // 如果想控制父目录显示，可以设置alwaysShow 为true
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
+        console.log("parent:",parent)
+        console.log("item: ",item)
         if (item.hidden) {
           return false
         } else {

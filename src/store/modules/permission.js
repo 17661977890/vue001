@@ -6,9 +6,9 @@ import { querySourceByRoles } from '@/api/sys/roleSource'
  * @param route
  */
 function hasPermission(sources, route) {
-  console.log(route.name)
+  // console.log(route.name)
   if (route.name) {
-    console.log(sources.some(source => route.name===source))
+    // console.log(sources.some(source => route.name===source))
     return sources.some(source => route.name==source)
   } else {
     return true
